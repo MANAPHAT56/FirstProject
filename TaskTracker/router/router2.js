@@ -243,21 +243,59 @@ router.post('/redeem-coupon',authenticateJWT,async (req,res)=>{
 }});
 });
 router.post('/usecoupon/:id',authenticateJWT,async(req,res)=>{
-  console.log("HI");
-  const couponId = req.params.id;
-  const userName=req.user.username;
-  const deleteQuery = `UPDATE \`${userName}\` SET Active = 'yes' WHERE id =  ${couponId}`
-  connection.query(deleteQuery,async (err,results)=>{
-     client.del('users', (err, response) => {
+  const id = req.params.id;
+  const userName = req.user.username;
+  
+  connection.query(`SELECT ExpiredAt FROM \`${userName}\` WHERE id = ?`, [id], (err, results) => {
       if (err) {
-          console.log('Error deleting key:', err);
+          console.error(err);
+          return res.status(500).send('Database error');
+      }
+  
+      let expireAt;
+      console.log(results[0]);
+      console.log("**********");
+      if (results.length === 0 || !results[0].expiredAt) {
+          // ❗ยังไม่มี expiredAt: กำหนดใหม่ + update เข้า DB
+          expireAt = new Date(Date.now() + 3 * 60 * 1000); // 3 นาที
+          console.log(expireAt);
+          const updateQuery = `UPDATE \`${userName}\` SET ExpiredAt = ?, Active = 'yes' WHERE id = ?`;
+          connection.query(updateQuery, [expireAt, id], (err2, result2) => {
+              if (err2) {
+                  console.error(err2);
+                  return res.status(500).send('Update error');
+              }
+  
+              // ลบ key redis
+              client.del('users', (err3, response) => {
+                  if (err3) console.log("Redis error", err3);
+                  else console.log("Key deleted:", response);
+              });
+  
+              res.render('qrcoupon', { couponId: id, expireAt });
+          });
       } else {
-        console.log("KRYE");
-          console.log('Key deleted successfully:', response);
-      }});
-    return res.render('qrcoupon',{couponId});
-  })
-});
+          // ❗มี expiredAt แล้ว
+          expireAt = results[0].expiredAt;
+          console.log(expireAt+"    c2");
+          const updateQuery = `UPDATE \`${userName}\` SET Active = 'yes' WHERE id = ?`;
+          connection.query(updateQuery, [id], (err2, result2) => {
+              if (err2) {
+                  console.error(err2);
+                  return res.status(500).send('Update error');
+              }
+  
+              client.del('users', (err3, response) => {
+                  if (err3) console.log("Redis error", err3);
+                  else console.log("Key deleted:", response);
+              });
+  
+              res.render('qrcoupon', { couponId: id, expireAt });
+          });
+      }
+  });
+  
+  });
 router.post('/deletecoupon/:id', authenticateJWT, async (req, res) => {
   const couponId = req.params.id;
   const userName = req.user.username;

@@ -97,6 +97,7 @@ const createTable = (tableName) => {
               name VARCHAR(100) NOT NULL,
               img VARCHAR(255),
               Active VARCHAR(10),
+               ExpiredAt DATETIME,
               couponid INT
           );
       `;
@@ -118,6 +119,7 @@ const createTableoauth2 = (tableName) => {
               name VARCHAR(255) NOT NULL,
               img VARCHAR(255),
               Active VARCHAR(10),
+               ExpiredAt DATETIME,
               couponid INT
           );
       `;
@@ -350,6 +352,7 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
   router.get('/logout',authenticateJWT,async(req,res)=>{
     res.clearCookie('token');
     res.clearCookie('refreshToken');
+    res.clearCookie('user');
     client.del('users', (err, response) => {
       if (err) {
           console.log('Error deleting key:', err);

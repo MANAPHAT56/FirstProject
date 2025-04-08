@@ -102,46 +102,44 @@
     </div>
 
     <script>
-        let timeLeft = 180; // 3 นาที = 180 วินาที
-        const countdownEl = document.getElementById("countdown");
+        const expireAt = new Date("<%= expireAt.toISOString() %>");
         const confirmBtn = document.getElementById("confirmBtn");
-
+        const countdownEl = document.getElementById("countdown");
+    
         function updateCountdown() {
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            seconds = seconds < 10 ? "0" + seconds : seconds; // ให้ 0 นำหน้าถ้าเป็นเลขหลักเดียว
-            countdownEl.innerHTML = minutes + ":" + seconds + " ก่อนหมดอายุ";
-            if (timeLeft === 0) {
-                clearInterval(timer);
+            const now = new Date();
+            const timeLeft = Math.floor((expireAt - now) / 1000); // วินาทีที่เหลือ
+    
+            if (timeLeft <= 0) {
                 countdownEl.innerHTML = "หมดอายุแล้ว!";
                 confirmBtn.disabled = true;
                 confirmBtn.classList.add("disabled");
-                fetch(`/deletecoupon/${couponId}`, {
-                    method: 'POST', // หรือใช้ GET ถ้าคุณต้องการ
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ couponId })  // ส่งข้อมูล เช่น couponId ถ้าจำเป็น
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                 if (!data.error) {
-                     alert(data.message); // Show alert for errors
-                      window.location.href='/tasks';
-                }else{
-                  alert(data.error);
-                 window.location.href='\login';
-                }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+    
+                // ส่งไปลบคูปองจาก server (ถ้ายังไม่ได้ลบ)
+                fetch(`/deletecoupon/<%= couponId %>`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ couponId: "<%= couponId %>" })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (!data.error) {
+                          alert(data.message);
+                          window.location.href = '/tasks';
+                      } else {
+                          alert(data.error);
+                          window.location.href = '/login';
+                      }
+                  }).catch(error => console.error('Error:', error));
             } else {
-                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                countdownEl.innerHTML = `${minutes}:${seconds < 10 ? "0" + seconds : seconds} ก่อนหมดอายุ`;
             }
         }
-        let timer = setInterval(updateCountdown, 1000);
+    
+        updateCountdown(); // เรียกตอนแรก
+        setInterval(updateCountdown, 1000);
     </script>
+    
 </body>
 </html>
