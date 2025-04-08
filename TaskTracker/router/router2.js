@@ -242,10 +242,10 @@ router.post('/redeem-coupon',authenticateJWT,async (req,res)=>{
 });
 }});
 });
-router.post('/usecoupon/:id',authenticateJWT,async(req,res)=>{
+router.post('/usecouponja/:id',authenticateJWT,async(req,res)=>{
+  console.log("**********");
   const id = req.params.id;
   const userName = req.user.username;
-  
   connection.query(`SELECT ExpiredAt FROM \`${userName}\` WHERE id = ?`, [id], (err, results) => {
       if (err) {
           console.error(err);
@@ -253,7 +253,7 @@ router.post('/usecoupon/:id',authenticateJWT,async(req,res)=>{
       }
   
       let expireAt;
-      console.log(results[0]);
+      console.log(results[0].expireAt+"fmmmf");
       console.log("**********");
       if (results.length === 0 || !results[0].expiredAt) {
           // ❗ยังไม่มี expiredAt: กำหนดใหม่ + update เข้า DB
@@ -265,21 +265,20 @@ router.post('/usecoupon/:id',authenticateJWT,async(req,res)=>{
                   console.error(err2);
                   return res.status(500).send('Update error');
               }
-  
               // ลบ key redis
               client.del('users', (err3, response) => {
                   if (err3) console.log("Redis error", err3);
                   else console.log("Key deleted:", response);
               });
-  
+                console.log(result2);
               res.render('qrcoupon', { couponId: id, expireAt });
           });
       } else {
           // ❗มี expiredAt แล้ว
           expireAt = results[0].expiredAt;
           console.log(expireAt+"    c2");
-          const updateQuery = `UPDATE \`${userName}\` SET Active = 'yes' WHERE id = ?`;
-          connection.query(updateQuery, [id], (err2, result2) => {
+          const updateQuery =  `UPDATE \`${userName}\` SET ExpiredAt = ?, Active = 'yes' WHERE id = ?`;
+          connection.query(updateQuery, [expireAt,id], (err2, result2) => {
               if (err2) {
                   console.error(err2);
                   return res.status(500).send('Update error');
@@ -289,7 +288,7 @@ router.post('/usecoupon/:id',authenticateJWT,async(req,res)=>{
                   if (err3) console.log("Redis error", err3);
                   else console.log("Key deleted:", response);
               });
-  
+               console.log(results2+"brhr");
               res.render('qrcoupon', { couponId: id, expireAt });
           });
       }
