@@ -1,0 +1,47 @@
+services:
+  node-server:
+    build: 
+        context: .
+    ports:
+      - "5001:5000"
+  apache:
+    image: httpd:latest  # ใช้ Apache HTTP Server
+    container_name: apache-server
+    environment:
+      APACHE_SERVER_NAME: 
+    volumes:
+      - D:/best/xamppja/apache:/usr/local/apache2/htdocs/ # ระบุ path ที่ต้องการให้ Apache ใช้งาน
+    ports:
+      - "80:80"  # ให้ Apache ใช้พอร์ต 80
+  db:
+    image: mysql:5.7.16
+    container_name: mysql-container
+    environment:     # Set a strong root password
+      MYSQL_ROOT_PASSWORD: mypassword   
+      MYSQL_DATABASE: my_db
+          # Optional: specify a default database      # Optional: password for the new user
+    ports:
+      - "3306:3306"
+    volumes:
+      - type: bind
+        source: D:\best\xamppja\tote+
+        target: /var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-container
+    environment:
+      PMA_HOST: mysql-container          # Link to MySQL service
+      PMA_USER: root                   # Optional: MySQL root user for phpMyAdmin
+      PMA_PASSWORD: mypassword      # Optional: MySQL root password
+    ports: 
+     - "8081:80"    
+  redis:
+    image: redis:latest    # ใช้ Redis ล่าสุด
+    container_name: redis-container
+    ports:
+      - "6379:6379"        # เปิดพอร์ต 6379 ให้เชื่อมต่อ Redis ได้จากภายนอก
+    volumes:
+      - redis-data:/data   # เก็บข้อมูล Redis ถาวร
+
+volumes:
+     redis-data:           # Access phpMyAdmin at http://localhost:8080

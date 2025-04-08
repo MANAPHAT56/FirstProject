@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tote+ | ร้านค้าพาร์ทเนอร์</title>
+    <style>
+        /* ตั้งค่าพื้นฐาน */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7fdf9;
+            color: #333;
+            padding-top: 60px; /* ปรับให้พอดีกับ navbar */
+            margin: 0;
+        }
+
+        /* คอนเทนเนอร์ของร้านค้า */
+        .store-container {
+            display: flex;
+            gap: 20px;
+            margin: 20px;
+            overflow-x: auto;
+            padding: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #4CAF50 #f0f0f0;
+        }
+
+        /* ปรับ Scroll Bar (สำหรับ Chrome และ Edge) */
+        .store-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .store-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .store-container::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border-radius: 10px;
+        }
+
+        /* การ์ดร้านค้า */
+        .store-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            width: 280px; /* กำหนดความกว้างคงที่ */
+            height: 280px; /* กำหนดความสูงคงที่ */
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: inherit;
+            flex-shrink: 0; /* ป้องกันไม่ให้กล่องบีบตัว */
+        }
+
+        .store-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* รูปร้านค้า */
+        .store-card img {
+            width: 90%; /* กำหนดความกว้างของภาพให้เล็กกว่ากล่อง */
+            height: 150px; /* กำหนดความสูงของภาพ */
+            border-radius: 8px;
+            object-fit: cover;
+            transition: 0.3s;
+            margin: 0 auto; /* จัดให้ภาพอยู่ตรงกลาง */
+        }
+
+        .store-card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* ข้อความภายในการ์ด */
+        .store-card h3 {
+            font-size: 1.3em;
+            color: #2e7d32;
+            margin: 10px 0;
+        }
+
+        .store-card p {
+            font-size: 1em;
+            color: #666;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <%- include("navbar") %> 
+    <div id="stores-list" class="store-container">
+        <% stores.forEach(store => { %>
+            <a href="/store/<%= store.id %>" class="store-card">
+                <div>
+                    <h3><%= store.name %></h3>
+                    <img src="<%= store.img %>" alt="โลโก้ <%= store.name %>">
+                </div>
+            </a>
+        <% }); %>
+    </div>
+</body>
+</html>
