@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tote+</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/index.js" defer></script>
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container">
+        <header>
+            <h1>Coupons</h1>
+        </header>
+        <main>
+            <section class="task-input">
+                    <form id="task-form" action="/tasks" method="POST" >
+                        <input type="text" id="task" placeholder="Add a new task" name="task" required>
+                        <button type="submit">Add Task</button>
+                    </form>
+            </section>
+            <section class="task-list">
+                <ul id="tasks">
+                    <!-- Tasks will be added here -->
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

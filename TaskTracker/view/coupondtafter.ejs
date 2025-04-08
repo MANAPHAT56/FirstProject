@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tote+ | รายละเอียดคูปอง</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding-top: 60px;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .coupon-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            font-size: 1.4em; /* ขนาดตัวอักษรที่เท่ากัน */
+            text-align: left;
+        }
+
+        .coupon-image {
+            width: 160px;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .redeem-button {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1.4em; /* ขนาดตัวอักษรที่เท่ากัน */
+            margin-top: 30px;
+        }
+
+        .redeem-button:hover {
+            background-color: #e68900;
+        }
+
+        .coupon-item {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 1.4em; /* ขนาดตัวอักษรที่เท่ากัน */
+        }
+
+        h2 {
+            text-align: left;
+            margin-left: 10px;
+            font-size: 1.6em; /* ปรับขนาดหัวข้อให้ใหญ่กว่า */
+        }
+
+        .coupon-item div {
+            margin-bottom: 25px; /* เพิ่มช่องว่างระหว่างแต่ละส่วน */
+        }
+    </style>
+    <script>
+        function redeemCoupon(couponId, couponImg, couponName) {
+            fetch('/redeem-coupon', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ couponId: couponId, couponImg: couponImg, couponName: couponName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    alert('แลกคูปองสำเร็จ!');
+                } else {
+                    alert('เกิดข้อผิดพลาด: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <%- include("navbar") %> 
+    <div class="coupon-container">
+        <h2>รายละเอียดคูปอง</h2>
+        <% coupondt.forEach(coupon => { %>
+            <div class="coupon-item">
+                <div><strong>ชื่อคูปอง:</strong> <%= coupon.name %></div>
+                <div><img src="<%= coupon.img %>" alt="คูปอง <%= coupon.name %>" class="coupon-image"></div>
+                <div><strong>คำอธิบาย:</strong> <%= coupon.description %></div>
+                <div><strong class="KUY">Store: </strong><%= storeName %></div>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>
