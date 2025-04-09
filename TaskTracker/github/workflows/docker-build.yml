@@ -1,0 +1,36 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main  # trigger เมื่อมีการ push ไปที่ branch main
+  pull_request:
+    branches:
+      - main  # trigger เมื่อมีการเปิด PR ไปที่ main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # ใช้ Ubuntu เป็น runner
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 2. Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # กำหนดเวอร์ชั่น Node.js ที่ใช้
+
+      # 3. ติดตั้ง dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. รันการทดสอบ
+      - name: Run tests
+        run: npm test
+
+      # 5. ถ้า build สำเร็จ ก็สามารถ deploy ได้
+      # - name: Deploy to production
+      #   run: ./deploy.sh
