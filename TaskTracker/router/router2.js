@@ -242,20 +242,20 @@ router.post('/redeem-coupon',authenticateJWT,async (req,res)=>{
 });
 }});
 });
-router.post('/usecouponja/:id',authenticateJWT,async(req,res)=>{
+router.post('/usecoupon/:id',authenticateJWT,async(req,res)=>{
   console.log("**********");
   const id = req.params.id;
   const userName = req.user.username;
+  let expireAt;
   connection.query(`SELECT ExpiredAt FROM \`${userName}\` WHERE id = ?`, [id], (err, results) => {
       if (err) {
           console.error(err);
           return res.status(500).send('Database error');
       }
-  
-      let expireAt;
       console.log(results[0].expireAt+"fmmmf");
       console.log("**********");
-      if (results.length === 0 || !results[0].expiredAt) {
+      if (results.length === 0 || !results[0].ExpiredAt) {
+        console.log(results[0].ExpiredAt);
           // ❗ยังไม่มี expiredAt: กำหนดใหม่ + update เข้า DB
           expireAt = new Date(Date.now() + 3 * 60 * 1000); // 3 นาที
           console.log(expireAt);
@@ -275,7 +275,7 @@ router.post('/usecouponja/:id',authenticateJWT,async(req,res)=>{
           });
       } else {
           // ❗มี expiredAt แล้ว
-          expireAt = results[0].expiredAt;
+          expireAt = results[0].ExpiredAt;
           console.log(expireAt+"    c2");
           const updateQuery =  `UPDATE \`${userName}\` SET ExpiredAt = ?, Active = 'yes' WHERE id = ?`;
           connection.query(updateQuery, [expireAt,id], (err2, result2) => {
@@ -288,7 +288,6 @@ router.post('/usecouponja/:id',authenticateJWT,async(req,res)=>{
                   if (err3) console.log("Redis error", err3);
                   else console.log("Key deleted:", response);
               });
-               console.log(results2+"brhr");
               res.render('qrcoupon', { couponId: id, expireAt });
           });
       }
