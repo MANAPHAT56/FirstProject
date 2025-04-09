@@ -1,6 +1,6 @@
 FROM node:18
 WORKDIR /use/src/app 
-COPY ./package.json ./
+COPY ./TaskTracker/package.json ./
 RUN npm install
 COPY . .
 EXPOSE 5000
