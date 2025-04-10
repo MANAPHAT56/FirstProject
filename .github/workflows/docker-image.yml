@@ -23,7 +23,7 @@ jobs:
            password: ${{ secrets.DOCKER_PASSWORD }}
 
      - name: Build the Docker image
-       run: docker build . --file ./TaskTracker/Dockerfile --tag myusername/myimagename:latest
+       run: docker build . --file ./TaskTracker/Dockerfile --tag manaphat/myimagename:latest
 
      - name: Push the Docker image
        run: docker push manaphat/myimagename:latest
