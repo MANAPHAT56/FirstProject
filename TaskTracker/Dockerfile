@@ -1,7 +1,19 @@
 FROM node:18
-WORKDIR /TaskTracker/usr/src/app
+
+# ตั้งค่า WORKDIR ให้ถูกต้อง
+WORKDIR /usr/src/app
+
+# คัดลอก package.json ก่อนเพื่อให้ npm install ทำงาน
 COPY ./TaskTracker/package.json ./
+
+# ติดตั้ง dependencies
 RUN npm install
-COPY . .
+
+# คัดลอกไฟล์ทั้งหมดจากโฟลเดอร์ TaskTracker
+COPY ./TaskTracker/ .
+
+# เปิดพอร์ต 5000
 EXPOSE 5000
-CMD ["node","app.js"]
+
+# รันแอปพลิเคชัน
+CMD ["node", "app.js"]
