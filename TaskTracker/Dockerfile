@@ -10,7 +10,7 @@ COPY ./TaskTracker/package.json ./
 RUN npm install
 
 # คัดลอกไฟล์ทั้งหมดจากโฟลเดอร์ TaskTracker
-COPY ./TaskTracker/ .
+COPY ../TaskTracker/ .
 
 # เปิดพอร์ต 5000
 EXPOSE 5000
