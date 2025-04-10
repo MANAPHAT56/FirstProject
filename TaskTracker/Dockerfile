@@ -1,5 +1,5 @@
 FROM node:18
-WORKDIR /use/src/app 
+WORKDIR /usr/src/app 
 COPY ./TaskTracker/package.json ./
 RUN npm install
 COPY . .
