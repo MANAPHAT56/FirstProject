@@ -4,13 +4,13 @@ FROM node:18
 WORKDIR /usr/src/app
 
 # คัดลอก package.json ก่อนเพื่อให้ npm install ทำงาน
-COPY ./TaskTracker/package.json ./
+COPY ../TaskTracker/package.json ./
 
 # ติดตั้ง dependencies
 RUN npm install
 
 # คัดลอกไฟล์ทั้งหมดจากโฟลเดอร์ TaskTracker
-COPY ./TaskTracker/ .
+COPY ../TaskTracker/ .
 
 # เปิดพอร์ต 5000
 EXPOSE 5000
