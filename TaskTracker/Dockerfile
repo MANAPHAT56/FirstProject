@@ -4,7 +4,7 @@ FROM node:18
 WORKDIR /usr/src/app
 
 # คัดลอก package.json ก่อนเพื่อให้ npm install ทำงาน
-COPY ./package.json ./
+COPY ../TaskTracker/package.json ./
 
 # ติดตั้ง dependencies
 RUN npm install
