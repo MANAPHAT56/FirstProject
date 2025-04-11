@@ -16,4 +16,4 @@ services:
     depends_on:
       - reverseproxy
     ports:
-      -3000:3000
+      - 3000:3000
