@@ -1,43 +1,29 @@
-name: Build and Push Docker Images
+name: Docker Image CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-      
-      - name: Checkout the repository
-        uses: actions/checkout@v2
+     - name: Check out repository
+       uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+     - name: Login to Docker Hub
+       uses: docker/login-action@v2
+       with:
+           username: ${{ secrets.DOCKER_USERNAME }}
+           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      # - name: Build App
-      #   run: |
-      #      docker build . --file ./TaskTracker/Dockerfile --tag manaphat/myimagename:latest
-      # - name: Push the Docker image
-      #   run: docker push manaphat/myimagename:latest
-            # Pull Apache image
-      - name: Pull Apache image
-        run: |
-          docker pull httpd:latest
+     - name: Build the Docker image
+       run: docker build . --file ./TaskTracker/Dockerfile --tag manaphat/myimagename:latest
 
-      # Build Apache image with multi-platform support
-      - name: Build Apache image
-        run: |
-          docker build . --file ./Dockerfile --tag manaphat/apache-image:latest
-      - name: Push the Docker image
-        run: docker push manaphat/apache-image:latest
+     - name: Push the Docker image
+       run: docker push manaphat/myimagename:latest
