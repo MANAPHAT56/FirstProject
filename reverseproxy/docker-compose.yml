@@ -3,7 +3,6 @@ services:
     image: reverseproxy
     # container_name: reverseproxy
     build:
-      context: reverseproxy
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
