@@ -40,4 +40,4 @@ jobs:
         run: |
           docker build . --file ./Dockerfile --tag manaphat/apache-image:latest
       - name: Push the Docker image
-        run: docker push manaphat/redis-image:latest
+        run: docker push manaphat/apache-image:latest
