@@ -1,16 +1,16 @@
-name: Pull, Build and Push Docker Images
+name: Build and Push Docker Images
 
 on:
   push:
     branches:
-      - main  # หรือใช้ branch ที่คุณต้องการ
+      - main
   pull_request:
     branches:
-      - main  # หรือใช้ branch ที่คุณต้องการ
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # ใช้เครื่อง Ubuntu สำหรับการ build
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout the repository
@@ -25,24 +25,22 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Pull the Redis image
+      # Pull Redis image
       - name: Pull Redis image
         run: |
           docker pull redis:latest
 
-      # Build the Redis image (if you want to modify or rebuild)
+      # Build Redis image with multi-platform support
       - name: Build Redis image
         run: |
-          docker build --platform linux/amd64,linux/arm64 -t redis-image:latest ./redis
-          docker push redis-image:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t redis-image:latest ./redis --push
 
-      # Pull the Apache image
+      # Pull Apache image
       - name: Pull Apache image
         run: |
           docker pull httpd:latest
 
-      # Build the Apache image (if you want to modify or rebuild)
+      # Build Apache image with multi-platform support
       - name: Build Apache image
         run: |
-          docker build --platform linux/amd64,linux/arm64 -t apache-image:latest ./apache
-          docker push apache-image:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t apache-image:latest ./apache --push
