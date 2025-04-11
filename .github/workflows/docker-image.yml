@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      
+      # 🔍 Debug directory structure
+      - name: Show directory structure
+        run: ls -R
       - name: Checkout the repository
         uses: actions/checkout@v2
 
@@ -33,16 +37,19 @@ jobs:
       - name: Pull Redis image
         run: |
           docker pull redis:latest
-
+     
+      # 🔍 Debug directory structure
+      - name: Show directory structure
+        run: ls -R
       # Build Redis image with multi-platform support
       - name: Build Redis image
         run: |
-         docker buildx build \
-          --file redis/Dockerfile \
-          --tag manaphat/redis-image:latest \
-          --push \
-          .
+          docker build . --file ./redis/Dockerfile --tag manaphat/redis-image:latest
       # Pull Apache image
+      
+      # 🔍 Debug directory structure
+      - name: Show directory structure
+        run: ls -R
       - name: Pull Apache image
         run: |
           docker pull httpd:latest
