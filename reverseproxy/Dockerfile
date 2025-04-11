@@ -1,10 +1,19 @@
-FROM node:lts-alpine
-ENV NODE_ENV=production
+FROM node:18
+
+# ตั้งค่า WORKDIR ให้ถูกต้อง
 WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm install 
+
+# คัดลอก package.json ก่อนเพื่อให้ npm install ทำงาน
+COPY ../reverseproxy/package.json ./
+
+# ติดตั้ง dependencies
+RUN npm install
+
+# คัดลอกไฟล์ทั้งหมดจากโฟลเดอร์ TaskTracker
 COPY . .
+
+# เปิดพอร์ต 5000
 EXPOSE 3000
-RUN chown -R node /usr/src/app
-USER node
+
+# รันแอปพลิเคชัน
 CMD ["node", "app.js"]
