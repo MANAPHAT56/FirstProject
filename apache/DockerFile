@@ -1,0 +1,2 @@
+# Dockerfile สำหรับ Apache
+FROM httpd:latest

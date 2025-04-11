@@ -1,0 +1,3 @@
+
+# Dockerfile สำหรับ Redis
+FROM redis:latest
