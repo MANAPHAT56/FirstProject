@@ -30,23 +30,14 @@ jobs:
       #      docker build . --file ./TaskTracker/Dockerfile --tag manaphat/myimagename:latest
       # - name: Push the Docker image
       #   run: docker push manaphat/myimagename:latest
-      # Pull Redis image
-      - name: Pull Redis image
+            # Pull Apache image
+      - name: Pull Apache image
         run: |
-          docker pull redis:latest
+          docker pull httpd:latest
 
-      # Build Redis image with multi-platform support
-      - name: Build Redis image
+      # Build Apache image with multi-platform support
+      - name: Build Apache image
         run: |
-          docker build . --file ./Dockerfile --tag manaphat/redis-image:latest
+          docker build . --file ./Dockerfile --tag manaphat/apache-image:latest
       - name: Push the Docker image
         run: docker push manaphat/redis-image:latest
-      # Pull Apache image
-      # - name: Pull Apache image
-      #   run: |
-      #     docker pull httpd:latest
-
-      # # Build Apache image with multi-platform support
-      # - name: Build Apache image
-      #   run: |
-      #     docker build . --file ./apache/Dockerfile --tag manaphat/apache-image:latest

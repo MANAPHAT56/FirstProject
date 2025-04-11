@@ -1,5 +1,3 @@
-
-# Dockerfile สำหรับ Redis
-FROM redis:latest
+# Dockerfile สำหรับ Apache
+FROM httpd:latest
 WORKDIR /usr/src/app
-
