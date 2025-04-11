@@ -33,7 +33,7 @@ jobs:
       # Build Redis image with multi-platform support
       - name: Build Redis image
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t redis-image:latest ./redis/DockerFile --push
+          docker buildx build --platform linux/amd64,linux/arm64 -t redis-image:latest --file ./redis/Dockerfile --push
 
       # Pull Apache image
       - name: Pull Apache image
@@ -43,4 +43,4 @@ jobs:
       # Build Apache image with multi-platform support
       - name: Build Apache image
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t apache-image:latest ./apache/DockerFile --push
+          docker buildx build --platform linux/amd64,linux/arm64 -t apache-image:latest --file ./apache/Dockerfile --push
