@@ -1,29 +1,38 @@
-name: Docker Image CI
+name: Build and Push Docker Images
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main  # หรือใช้ branch ที่คุณต้องการ
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # หรือใช้ branch ที่คุณต้องการ
 
 jobs:
-
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # ใช้เครื่อง Ubuntu สำหรับการ build
 
     steps:
-     - name: Check out repository
-       uses: actions/checkout@v2
+      - name: Checkout the repository
+        uses: actions/checkout@v2
 
-     - name: Login to Docker Hub
-       uses: docker/login-action@v2
-       with:
-           username: ${{ secrets.DOCKER_USERNAME }}
-           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-     - name: Build the Docker image
-       run: docker build . --file ./TaskTracker/Dockerfile --tag manaphat/myimagename:latest
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-     - name: Push the Docker image
-       run: docker push manaphat/myimagename:latest
+      # Build and push Redis image
+      - name: Build Redis image
+        run: |
+          docker build --platform linux/amd64,linux/arm64 -t redis-image:latest ./redis
+          docker push redis-image:latest
+
+      # Build and push Apache image
+      - name: Build Apache image
+        run: |
+          docker build --platform linux/amd64,linux/arm64 -t apache-image:latest ./apache
+          docker push apache-image:latest
