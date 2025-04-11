@@ -37,7 +37,11 @@ jobs:
       # Build Redis image with multi-platform support
       - name: Build Redis image
         run: |
-          docker build . --file ./redis/Dockerfile --tag manaphat/redis-image:latest
+         docker buildx build \
+          --file redis/Dockerfile \
+          --tag manaphat/redis-image:latest \
+          --push \
+          .
       # Pull Apache image
       - name: Pull Apache image
         run: |
