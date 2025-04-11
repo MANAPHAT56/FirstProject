@@ -27,6 +27,8 @@ jobs:
       - name: Build App
         run: |
            docker build . --file ./TaskTracker/Dockerfile --tag manaphat/myimagename:latest
+      - name: Push the Docker image
+        run: docker push manaphat/myimagename:latest
       # Pull Redis image
       - name: Pull Redis image
         run: |
@@ -36,7 +38,6 @@ jobs:
       - name: Build Redis image
         run: |
           docker build . --file ./redis/Dockerfile --tag redis-image:latest
-
       # Pull Apache image
       - name: Pull Apache image
         run: |
