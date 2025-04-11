@@ -12,7 +12,7 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      -./conf.d:/etc/nginx/condf.d
+      - ./conf.d:/etc/nginx/condf.d
     depends_on:
       - reverseproxy
     ports:
