@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker image for Node.js
         run: |
-          docker build -t manapghat/node-server:latest ./TaskTracker
+          docker build -t manaphat/node-server:latest ./TaskTracker
           
       - name: Push Docker image to Docker Hub
         run: |
