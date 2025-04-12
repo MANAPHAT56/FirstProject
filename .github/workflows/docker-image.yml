@@ -27,5 +27,5 @@ jobs:
 
       - name: Build and push Docker images using Docker Compose
         run: |
-          docker-compose -f ../TaskTracker/docker-compose.yml build  # Build images based on your docker-compose.yml file
-          docker-compose -f ../TaskTracker/docker-compose.yml push   # Push images to Docker Hub
+          docker-compose -f /TaskTracker/docker-compose.yml build  # Build images based on your docker-compose.yml file
+          docker-compose -f /TaskTracker/docker-compose.yml push   # Push images to Docker Hub
