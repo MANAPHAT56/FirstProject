@@ -43,4 +43,4 @@ services:
     ports:
       - "5001:5000"
 volumes:
-     redis-data:           # Access phpMyAdmin at http://localhost:8080
+     redis-data:           # Access phpMyAdmin at http://localhost:8080.
