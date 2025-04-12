@@ -19,13 +19,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      #htfhtj
-      - name: Set up Docker Compose
+
+      - name: Set up Docker
         run: |
           sudo apt-get update
-          sudo apt-get install docker-compose
+          sudo apt-get install docker
 
-      - name: Build and push Docker images using Docker Compose
+      - name: Build Docker image for Node.js
         run: |
-          docker-compose -f ./TaskTracker/docker-compose.yml build  # Build images based on your docker-compose.yml file
-          docker-compose -f ./TaskTracker/docker-compose.yml push   # Push images to Docker Hub
+          docker build -t manapghat/node-server:latest ./TaskTracker
+          
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push manaphat/node-server:latest
