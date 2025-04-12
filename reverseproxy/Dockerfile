@@ -1,19 +1,10 @@
 FROM node:18
-
-# ตั้งค่า WORKDIR ให้ถูกต้อง
+ENV NODE_ENV=production
 WORKDIR /usr/src/app
-
-# คัดลอก package.json ก่อนเพื่อให้ npm install ทำงาน
-COPY ./package.json ./
-
-# ติดตั้ง dependencies
-RUN npm install
-
-# คัดลอกไฟล์ทั้งหมดจากโฟลเดอร์ TaskTracker
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm install --production --silent && mv node_modules ../
 COPY . .
-
-# เปิดพอร์ต 5000 
 EXPOSE 3000
-
-# รันแอปพลิเคชัน
+RUN chown -R node /usr/src/app
+USER node
 CMD ["node", "app.js"]

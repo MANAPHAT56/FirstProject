@@ -1,0 +1,10 @@
+services:
+  reverseproxy:
+    image: reverseproxy
+    build:
+      context: reverseproxy
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
