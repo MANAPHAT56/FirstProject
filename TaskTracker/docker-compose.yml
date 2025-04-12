@@ -5,7 +5,7 @@ services:
     environment:
       APACHE_SERVER_NAME: 
     volumes:
-      - D:/best/xamppja/apache:/usr/local/apache2/htdocs/ # ระบุ path ที่ต้องการให้ Apache ใช้งาน
+      - /d/best/xamppja/apache:/usr/local/apache2/htdocs/ # ระบุ path ที่ต้องการให้ Apache ใช้งาน
     ports:
       - "80:80"  # ให้ Apache ใช้พอร์ต 80
   db:
