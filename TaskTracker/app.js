@@ -18,17 +18,8 @@ app.use(express.urlencoded({extended:false}));
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,"view"));
 const https = require('https');
-const http2 = require('http2');
 const fs = require('fs');
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
-// app.use((req, res, next) => {
-//   if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
-//     return res.redirect(301, `https://${req.headers.host}${req.url}`);
-//   }
-//   next();
-// });
 app.use(cors({ // ตั้งค่าให้ถูกต้องกับโดเมนของ frontend
     methods: ['GET', 'POST'],
     credentials: true
@@ -67,7 +58,7 @@ const options = {
 // ตั้งค่า Rate Limiting (100 requests ต่อ IP ต่อ 1 นาที)
 
 // ใช้ Rate Limiting กับทุก API ที่อยู่ใต้ "/api/"
-http2.createServer(options, app).listen(5000, () => {
+https.createServer(options, app).listen(5000, () => {
   console.log('Server is running on HTTPS');
 });
 // // Middleware
