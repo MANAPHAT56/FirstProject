@@ -18,6 +18,7 @@ app.use(express.urlencoded({extended:false}));
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,"view"));
 const https = require('https');
+const http2 = require('http2');
 const fs = require('fs');
 // const passport = require('passport');
 // const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -66,7 +67,7 @@ const options = {
 // ตั้งค่า Rate Limiting (100 requests ต่อ IP ต่อ 1 นาที)
 
 // ใช้ Rate Limiting กับทุก API ที่อยู่ใต้ "/api/"
-https.createServer(options, app).listen(5000, () => {
+http2.createServer(options, app).listen(5000, () => {
   console.log('Server is running on HTTPS');
 });
 // // Middleware
