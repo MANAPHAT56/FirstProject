@@ -123,10 +123,9 @@
                 }).then(response => response.json())
                   .then(data => {
                       if (!data.error) {
-                          alert(data.message);
+
                           window.location.href = '/tasks';
                       } else {
-                          alert(data.error);
                           window.location.href = '/login';
                       }
                   }).catch(error => console.error('Error:', error));
