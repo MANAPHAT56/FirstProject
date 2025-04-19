@@ -36,7 +36,7 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/mysql
           name: mysql-storage
-        volumes:
+      volumes:
         - name: mysql-storage
           hostPath:
            path: /d/best/xamppja/tote+  # ต้องใช้ path แบบ Unix-style สำหรับ Windows
