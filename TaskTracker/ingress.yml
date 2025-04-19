@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: server-ingress
   annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
@@ -21,4 +22,5 @@ spec:
           service:
             name: node-server-service
             port:
-              number: 5001
+              number: 5000
+              
