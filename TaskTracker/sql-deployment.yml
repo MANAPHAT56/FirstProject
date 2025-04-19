@@ -7,7 +7,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 1Gi  # ขนาดที่ต้องการ
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,13 +34,12 @@ spec:
         ports:
         - containerPort: 3306
         volumeMounts:
-        - mountPath: /var/lib/mysql 
+        - mountPath: /var/lib/mysql
           name: mysql-storage
       volumes:
         - name: mysql-storage
-          hostPath:
-           path: /d/best/xamppja/tote+  # ต้องใช้ path แบบ Unix-style สำหรับ Windows
-           type: Directory
+          persistentVolumeClaim:
+            claimName: mysql-pvc  # PVC ที่จะนำมาใช้
 ---
 apiVersion: v1
 kind: Service
@@ -53,3 +52,16 @@ spec:
   - port: 3306
     targetPort: 3306
   type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /d/best/xamppja/tote # เปลี่ยน path ตามที่เหมาะสมกับเครื่อง host ของคุณ
+  persistentVolumeReclaimPolicy: Retain  # ข้อมูลยังคงอยู่แม้ PV ถูกลบ
