@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7.16
+        image: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: "mypassword"
@@ -39,8 +39,9 @@ spec:
         volumes:
         - name: mysql-storage
           hostPath:
-          path: /d/best/xamppja/tote+  # ต้องใช้ path แบบ Unix-style สำหรับ Windows
-          type: Directory
+           path: /d/best/xamppja/tote+  # ต้องใช้ path แบบ Unix-style สำหรับ Windows
+           type: Directory
+---
 apiVersion: v1
 kind: Service
 metadata:
