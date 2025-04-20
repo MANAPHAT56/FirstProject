@@ -4,37 +4,35 @@ metadata:
   name: server-ingress
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - tote.com
-    secretName: apache-tls-secret  # secret ที่เก็บ TLS certificate + private key
+    - hosts:
+        - tote.com
+      secretName: apache-tls-secret
   rules:
-  - host: tote.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: node-server-service
-            port:
-              number: 5000  
-      - path: /phpmyadmin
-        pathType: Prefix
-        backend:
-          service:
-            name: phpmyadmin-service
-            port:
-              number: 80
-      - path: /sql
-        pathType: Prefix
-        backend:
-          service:
-            name: mysql-service
-            port:
-              number: 80
-              
+    - host: tote.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: node-server-service
+                port:
+                  number: 5000
+          - path: /phpmyadmin
+            pathType: Prefix
+            backend:
+              service:
+                name: phpmyadmin-service
+                port:
+                  number: 80
+          - path: /sql
+            pathType: Prefix
+            backend:
+              service:
+                name: mysql-service
+                port:
+                  number: 80
