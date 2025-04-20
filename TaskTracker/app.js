@@ -63,6 +63,7 @@ app.use(session({
 // https.createServer(options, app).listen(5000, () => {
 //   console.log('Server is running on HTTPS');
 // });
+app.set('trust proxy', 1);
 app.listen(5000, () => {
   console.log("Server running on HTTP port 5000");
 });
