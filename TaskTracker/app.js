@@ -48,25 +48,25 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-// const options = {
-//   key: fs.readFileSync("./tls.key"),        // ✅ ใส่ path ของ private key
-//   cert: fs.readFileSync("./tls.crt"),       // ✅ ใส่ path ของ certificate
-//   // key: fs.readFileSync("./OpenSSL-Win64/bin/privatekey.pem"),  // ใช้ private key ของคุณ
-//   // cert: fs.readFileSync("./OpenSSL-Win64/bin/certificate.pem"),  // ใช้ certificate ของคุณ
-//   // ca: fs.readFileSync("./OpenSSL-Win64/bin/certificate.csr"), // ใช้ CA cert (ถ้ามี)
-//   // passphrase: '18081978'
-// };  
+const options = {
+  key: fs.readFileSync("./tls.key"),        // ✅ ใส่ path ของ private key
+  cert: fs.readFileSync("./tls.crt"),       // ✅ ใส่ path ของ certificate
+  // key: fs.readFileSync("./OpenSSL-Win64/bin/privatekey.pem"),  // ใช้ private key ของคุณ
+  // cert: fs.readFileSync("./OpenSSL-Win64/bin/certificate.pem"),  // ใช้ certificate ของคุณ
+  // ca: fs.readFileSync("./OpenSSL-Win64/bin/certificate.csr"), // ใช้ CA cert (ถ้ามี)
+  // passphrase: '18081978'
+};  
 
 // ตั้งค่า Rate Limiting (100 requests ต่อ IP ต่อ 1 นาที)
 
 // ใช้ Rate Limiting กับทุก API ที่อยู่ใต้ "/api/"
-// https.createServer(options, app).listen(5000, () => {
-//   console.log('Server is running on HTTPS');
-// });
-app.set('trust proxy', 1);
-app.listen(5000, () => {
-  console.log("Server running on HTTP port 5000");
+https.createServer(options, app).listen(5000, () => {
+  console.log('Server is running on HTTPS');
 });
+// app.set('trust proxy', 1);
+// app.listen(5001, () => {
+//   console.log("Server running on HTTP port 5000");
+// });
 // // Middleware
 // app.use(passport.initialize());
 // app.use(passport.session());

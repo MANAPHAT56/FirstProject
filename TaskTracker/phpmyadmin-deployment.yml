@@ -35,25 +35,24 @@ spec:
   ports:
   - port: 8080
     targetPort: 8080
-    nodePort: 30001
-  type: NodePort
----
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: php-fpm-deployment
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: php-fpm
-    template:
-      metadata:
-        labels:
-          app: php-fpm
-      spec:
-        containers:
-          - name: php-fpm
-            image: php:7-fpm
-            ports:
-              - containerPort: 9000
+  type: ClusterIP
+# ---
+#   apiVersion: apps/v1
+#   kind: Deployment
+#   metadata:
+#     name: php-fpm-deployment
+#   spec:
+#     replicas: 1
+#     selector:
+#       matchLabels:
+#         app: php-fpm
+#     template:
+#       metadata:
+#         labels:
+#           app: php-fpm
+#       spec:
+#         containers:
+#           - name: php-fpm
+#             image: php:7-fpm
+#             ports:
+#               - containerPort: 9000
