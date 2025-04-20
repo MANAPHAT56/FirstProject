@@ -22,5 +22,19 @@ spec:
           service:
             name: node-server-service
             port:
-              number: 5000
+              number: 5000  
+      - path: /phpmyadmin
+        pathType: Prefix
+        backend:
+          service:
+            name: phpmyadmin-service
+            port:
+              number: 80
+      - path: /sql
+        pathType: Prefix
+        backend:
+          service:
+            name: mysql-service
+            port:
+              number: 80
               
