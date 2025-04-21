@@ -49,12 +49,12 @@ app.use(session({
   saveUninitialized: true,
 }));
 const options = {
-  // key: fs.readFileSync("./tls.key"),        // ✅ ใส่ path ของ private key
-  // cert: fs.readFileSync("./tls.crt"),       // ✅ ใส่ path ของ certificate
-  key: fs.readFileSync("./OpenSSL-Win64/bin/privatekey.pem"),  // ใช้ private key ของคุณ
-  cert: fs.readFileSync("./OpenSSL-Win64/bin/certificate.pem"),  // ใช้ certificate ของคุณ
-  ca: fs.readFileSync("./OpenSSL-Win64/bin/certificate.csr"), // ใช้ CA cert (ถ้ามี)
-  passphrase: '18081978'
+  key: fs.readFileSync("./tls.key"),        // ✅ ใส่ path ของ private key
+  cert: fs.readFileSync("./tls.crt"),       // ✅ ใส่ path ของ certificate
+  // key: fs.readFileSync("./OpenSSL-Win64/bin/privatekey.pem"),  // ใช้ private key ของคุณ
+  // cert: fs.readFileSync("./OpenSSL-Win64/bin/certificate.pem"),  // ใช้ certificate ของคุณ
+  // ca: fs.readFileSync("./OpenSSL-Win64/bin/certificate.csr"), // ใช้ CA cert (ถ้ามี)
+  // passphrase: '18081978'
 };  
 
 // ตั้งค่า Rate Limiting (100 requests ต่อ IP ต่อ 1 นาที)
