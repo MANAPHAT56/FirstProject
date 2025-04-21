@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    animation: fadeInBackground 0.8s ease-in-out; /* ปรับความเร็วของพื้นหลัง */
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 40px; /* เพิ่มขนาดของกล่องล็อกอิน */
+    border-radius: 8px; /* ขอบมนมากขึ้น */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15); /* เงาที่ละเอียดขึ้น */
+    animation: fadeInUp 0.8s ease-in-out; /* เพิ่มความเร็วของการเคลื่อนไหว */
+    width: 350px; /* เพิ่มความกว้างของฟอร์ม */
+    text-align: center; /* จัดข้อความให้ตรงกลาง */
+}
+
+h2 {
+    margin-bottom: 30px;
+    font-size: 1.5rem; /* ขนาดตัวอักษรใหญ่ขึ้น */
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #555;
+}
+
+input {
+    width: 100%; /* ให้เต็มความกว้าง */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px; /* ขอบมนมากขึ้น */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    border-color: #5cb85c;
+    box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #5cb85c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #4cae4c;
+    transform: scale(1.05);
+}
+
+.google-login {
+    margin-top: 20px;
+}
+
+.google-btn img {
+    width: 22px;
+    height: auto;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInBackground {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

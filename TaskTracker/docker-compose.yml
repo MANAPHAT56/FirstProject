@@ -8,6 +8,8 @@ services:
       - /d/best/xamppja/apache:/usr/local/apache2/htdocs/ # ระบุ path ที่ต้องการให้ Apache ใช้งาน
     ports:
       - "80:80"  # ให้ Apache ใช้พอร์ต 80
+    restart:
+       always
   db:
     image: mysql:5.7.16
     container_name: mysql-container
@@ -19,8 +21,8 @@ services:
       - "3306:3306"
     volumes:
       - type: bind
-        source: D:\best\xamppja\tote+
-        target: /var/lib/mysql
+        source: D:\best\xamppja\tote
+        target: /var/ีlib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin-container

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tote+ | คูปองร้านค้า</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding-top: 60px;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .coupon-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .coupon-image {
+            width: 80px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .use-coupon {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .use-coupon:hover {
+            background-color: #e68900;
+        }
+    </style>
+</head>
+<body>
+    <%- include("navbar") %> 
+    <div class="coupon-container">
+        <h2>คูปองจากร้านค้า</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>รูปคูปอง</th>
+                    <th>ชื่อคูปอง</th>
+                    <th>ตรวจสอบ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% coupons.forEach(coupon => { %>
+                    <tr>
+                        <td>
+                            <img src="<%= coupon.img %>" alt="คูปอง <%= coupon.name %>" class="coupon-image">
+                        </td>
+                        <td><%= coupon.name %></td>
+                        <td> 
+                     <form action="/coupon/<%= coupon.id %>" method="POST" id="KUY">
+                      <button class="use-coupon" data-id="<%= coupon.id %>" type="submit">Details</button>
+                     </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <br>
+        <a href="/coupons" class="use-coupon">BACK TO STORES PAGE</a>
+    </div>
+    <script src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="../css/tasks.css">
+    <script src="../js/index.js" defer></script>
+</head>
+<body>
+    <%- include('navbar') %>
+
+    <div class="container">
+        <header>
+            <h1>Coupons</h1>
+        </header>
+
+        <!-- ช่องแสดงคะแนน -->
+        <section class="points-display">
+            <p>Points: <%=point%></p>
+        </section>
+
+        <main>
+            <!-- ตารางคูปองที่กำลังใช้งาน -->
+            <section class="active-coupons">
+                <h2>Active Coupons</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Details</th>
+                            <th>Scan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% activeCoupons.forEach(coupon => { %>
+                            <tr>
+                                <td><img src="<%= coupon.img %>" alt="<%= coupon.name %>" class="coupon-img"></td>
+                                <td><%= coupon.name %></td>
+                                <td>
+                                    <form action="/couponafter/<%= coupon.couponid %>" method="POST">
+                                        <button class="btn-details" data-id="<%= coupon.couponid %>" type="submit">Details</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="/usecoupon/<%= coupon.id %>" method="POST">
+                                        <button class="btn-use" data-id="<%= coupon.id %>" type="submit">View</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ตารางคูปองทั้งหมด -->
+            <section class="task-list">
+                <h2>All Coupons</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Details</th>
+                            <th>Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tasks.forEach(task => { %>
+                            <tr>
+                                <td><img src="<%= task.img %>" alt="<%= task.name %>" class="coupon-img"></td>
+                                <td><%= task.name %></td>
+                                <td>
+                                    <form action="/couponafter/<%= task.couponid %>" method="POST">
+                                        <button class="btn-details" data-id="<%= task.couponid %>" type="submit">Details</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="/usecoupon/<%= task.id %>" method="POST">
+                                        <button class="btn-use" data-id="<%= task.id %>" type="submit">Use</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

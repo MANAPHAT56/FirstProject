@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Coupon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 90%;
+            width: 600px;
+            padding: 20px;
+            background: none;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* นาฬิกานับถอยหลัง */
+        .countdown {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .barcode-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .barcode-img {
+            width: 80%;
+            max-width: 500px;
+            max-height: 50vh;
+            object-fit: contain;
+        }
+
+        .btn-confirm {
+            display: block;
+            margin: 20px auto 0;
+            width: 50%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .btn-confirm:hover {
+            background-color: #218838;
+        }
+
+        /* ปุ่มปิดใช้งานเมื่อหมดเวลา */
+        .disabled {
+            background-color: gray !important;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container">
+        <header>
+            <h1>Use Your Coupon</h1>
+        </header>
+        
+        <!-- นาฬิกานับถอยหลัง -->
+        <div class="countdown" id="countdown">3:00 ก่อนหมดอายุ</div>
+
+        <main>
+            <section class="qr-section">
+                <div class="barcode-container">
+                    <img src="../images/barcode.jpg" alt="Barcode" class="barcode-img">
+                </div>
+                <!-- ปุ่มยืนยัน -->
+                <form action="/deletecoupon/<%=couponId%>" method="POST">
+                    <button class="btn-confirm" id="confirmBtn" type="submit">Confirm</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const expireAt = new Date("<%= expireAt.toISOString() %>");
+        const confirmBtn = document.getElementById("confirmBtn");
+        const countdownEl = document.getElementById("countdown");
+    
+        function updateCountdown() {
+            const now = new Date();
+            const timeLeft = Math.floor((expireAt - now) / 1000); // วินาทีที่เหลือ
+    
+            if (timeLeft <= 0) {
+                countdownEl.innerHTML = "หมดอายุแล้ว!";
+                confirmBtn.disabled = true;
+                confirmBtn.classList.add("disabled");
+    
+                // ส่งไปลบคูปองจาก server (ถ้ายังไม่ได้ลบ)
+                fetch(`/deletecoupon/<%= couponId %>`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ couponId: "<%= couponId %>" })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (!data.error) {
+                          window.location.href = '/tasks';
+                      } else {
+                          window.location.href = '/login';
+                      }
+                  }).catch(error => console.error('Error:', error));
+            } else {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                countdownEl.innerHTML = `${minutes}:${seconds < 10 ? "0" + seconds : seconds} ก่อนหมดอายุ`;
+            }
+        }
+    
+        updateCountdown(); // เรียกตอนแรก
+        setInterval(updateCountdown, 1000);
+    </script>
+    
+</body>
+</html>
