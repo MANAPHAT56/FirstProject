@@ -1,0 +1,13 @@
+// const jwt=require("jsonwebtoken");
+// const secretKey = '18081978';
+// let payload = { userId: 123, role: 'admin' };
+// let token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+// console.log('Generated Token:', token);
+// const payload2 = { userId: 1234, role: 'admin' };
+// const token2 = jwt.sign(payload2, secretKey, { expiresIn: '1h' });
+// const decoded2 = jwt.verify(token2, '18081978');
+// payload = { userId: 1234, role: 'admin' };
+// token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+// const decoded = jwt.verify(token, '18081978');
+// console.log(decoded);
+// console.log(decoded2);
