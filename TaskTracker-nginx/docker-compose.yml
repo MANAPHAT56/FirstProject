@@ -5,13 +5,13 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/certificate.pem:/etc/nginx/ssl/certificate.pem
-      - ./nginx/privatekey.pem:/etc/nginx/ssl/privatekey.pem
+      - ./conf.d/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./tls.crt:/etc/nginx/ssl/certificate.pem
+      - ./tls.key:/etc/nginx/ssl/privatekey.pem
     networks:
       - my-network
     depends_on:
-      - node-server
+      - node-server-nginx
       - phpmyadmin-container
   db:
     image: mysql:5.7.16
