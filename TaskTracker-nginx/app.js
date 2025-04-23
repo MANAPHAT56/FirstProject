@@ -60,13 +60,13 @@ const options = {
 // ตั้งค่า Rate Limiting (100 requests ต่อ IP ต่อ 1 นาที)
 
 // ใช้ Rate Limiting กับทุก API ที่อยู่ใต้ "/api/"
-https.createServer(options, app).listen(5000, () => {
-  console.log('Server is running on HTTPS');
-});
-// app.set('trust proxy', 1);
-// app.listen(5001, () => {
-//   console.log("Server running on HTTP port 5000");
+// https.createServer(options, app).listen(5000, () => {
+//   console.log('Server is running on HTTPS');
 // });
+// app.set('trust proxy', 1);
+app.listen(5000, () => {
+  console.log("Server running on HTTP port 5000");
+});
 // // Middleware
 // app.use(passport.initialize());
 // app.use(passport.session());

@@ -1,13 +1,18 @@
 services:
-  apache:
-    image: httpd:latest  # ใช้ Apache HTTP Server
-    container_name: apache-server
-    environment:
-      APACHE_SERVER_NAME: 
-    volumes:
-      - /d/best/xamppja/apache:/usr/local/apache2/htdocs/ # ระบุ path ที่ต้องการให้ Apache ใช้งาน
+  nginx:
+    image: nginx:latest
+    container_name: kuy
     ports:
-      - "80:80"  # ให้ Apache ใช้พอร์ต 80
+      - "443:443"
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./tls.crt:/etc/nginx/ssl/fullchain.pem   # เปลี่ยนให้เป็นไฟล์เฉพาะ
+      - ./tls.key:/etc/nginx/ssl/privkey.pem
+    depends_on:
+      - node-server
+      - node-server2
+      - node-server3
+
   db:
     image: mysql:5.7.16
     container_name: mysql-container
@@ -41,6 +46,16 @@ services:
     build: 
         context: .
     ports:
-      - "5001:5000"
+      - "5001:5000" 
+  node-server2:               
+    build: 
+        context: .
+    ports:
+      - "5002:5000"
+  node-server3:
+    build: 
+        context: .
+    ports:
+      - "5003:5000"
 volumes:
      redis-data:           # Access phpMyAdmin at http://localhost:8080.
