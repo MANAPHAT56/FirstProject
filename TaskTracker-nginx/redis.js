@@ -15,7 +15,7 @@
 //   module.exports = client;
 const redis = require('redis');
 const client = redis.createClient({
-  url: 'redis://redis-service:6379'
+  url: 'redis://redis-container:6379'
 });
 
 client.on('connect', () => {

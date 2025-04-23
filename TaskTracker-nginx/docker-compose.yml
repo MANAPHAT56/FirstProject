@@ -24,7 +24,7 @@ services:
       - "3306:3306"
     volumes:
       - type: bind
-        source: D:\best\xamppja\tote+
+        source: D:\best\xamppja\tote
         target: /var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
