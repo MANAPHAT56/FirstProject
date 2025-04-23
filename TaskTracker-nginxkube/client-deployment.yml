@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: node-server-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: node-server
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: node-server
-        image: manaphat/node-server:latest
+        image: manaphat/node-server:kube
         ports:
         - containerPort: 5000
 ---

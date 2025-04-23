@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: node-server
-        image: manaphat/node-server:kube
+        image: manaphat/node-server:latest
         ports:
         - containerPort: 5000
 ---

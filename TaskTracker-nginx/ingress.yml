@@ -1,32 +1,30 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: phpmyadmin-ingress
-#   annotations:
-#     nginx.ingress.kubernetes.io/rewrite-target: /$2
-# spec:
-#   ingressClassName: nginx
-#   rules:
-#     - host: tote.com
-#       http:
-#         paths:
-#           - path: /phpmyadmin(/|$)(.*)
-#             pathType: ImplementationSpecific
-#             backend:
-#               service:
-#                 name: phpmyadmin-service
-#                 port:
-#                   number: 8080
-# ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: phpmyadmin-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: tote.com
+      http:
+        paths:
+          - path: /phpmyadmin(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: phpmyadmin-service
+                port:
+                  number: 8080
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: node-server-ingress
-  annotation: 
-    kubenetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
-spec: 
-   rules:
+spec:
+  ingressClassName: nginx
+  rules:
     - host: tote.com
       http:
         paths:
@@ -37,10 +35,3 @@ spec:
                 name: node-server-service
                 port:
                   number: 5000
-          - path: /phpMyadmin
-            pathType: Prefix
-            backend:
-              service:
-                name: phpmyadmin-service
-                port:
-                  number: 8080
