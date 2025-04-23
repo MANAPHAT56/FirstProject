@@ -21,8 +21,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker image for Node.js
         run: |
-          docker build -t manaphat/node-servernginx:nginx ./TaskTracker-nginx
+          docker build -t manaphat/node-server:kube ./TaskTracker-nginxkube
           
       - name: Push Docker image to Docker Hub
         run: |
-          docker push manaphat/node-servernginx:nginx
+          docker push manaphat/node-server:kube

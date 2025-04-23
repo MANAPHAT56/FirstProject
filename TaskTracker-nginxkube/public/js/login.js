@@ -27,7 +27,7 @@ function generateRandomString(length) {
   
   // ข้อมูลที่ใช้ใน OAuth
   const clientId = '575897144741-oahon6knnlh0a6tvifopuqrvt3bq4b74.apps.googleusercontent.com';
-  const redirectUri = 'https://localhost:5001/auth/google/callback';
+  const redirectUri = 'https://tote.com/auth/google/callback';
   const authorizationUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
   
   // ฟังก์ชันเมื่อผู้ใช้คลิกปุ่ม Login
