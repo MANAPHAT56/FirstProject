@@ -1,0 +1,76 @@
+{
+    "dashboard": {
+      "id": null,
+      "title": "Node.js App Metrics",
+      "timezone": "browser",
+      "schemaVersion": 37,
+      "version": 1,
+      "refresh": "5s",
+      "panels": [
+        {
+          "type": "graph",
+          "title": "Average Response Time (by Route)",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "rate(http_request_duration_seconds_sum[1m]) / rate(http_request_duration_seconds_count[1m])",
+              "legendFormat": "{{route}}",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+        },
+        {
+          "type": "graph",
+          "title": "Request Count (by Route)",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum by (route) (rate(http_request_duration_seconds_count[1m]))",
+              "legendFormat": "{{route}}",
+              "refId": "B"
+            }
+          ],
+          "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 }
+        },
+        {
+          "type": "table",
+          "title": "Top 5 Slowest Routes",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "topk(5, rate(http_request_duration_seconds_sum[1m]) / rate(http_request_duration_seconds_count[1m]))",
+              "legendFormat": "{{route}}",
+              "refId": "C"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 8, "w": 24, "h": 8 }
+        },
+        {
+          "type": "stat",
+          "title": "5xx Error Rate",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total{status=~\"5..\"}[1m]))",
+              "refId": "D"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 16, "w": 12, "h": 6 }
+        },
+        {
+          "type": "stat",
+          "title": "4xx Error Rate",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total{status=~\"4..\"}[1m]))",
+              "refId": "E"
+            }
+          ],
+          "gridPos": { "x": 12, "y": 16, "w": 12, "h": 6 }
+        }
+      ]
+    }
+  }
+  

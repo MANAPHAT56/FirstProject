@@ -53,6 +53,7 @@
     "escape-html": "^1.0.3",
     "etag": "^1.8.1",
     "express": "^4.21.1",
+    "express-prometheus-middleware": "^1.2.0",
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.0",
     "filelist": "^1.0.4",
