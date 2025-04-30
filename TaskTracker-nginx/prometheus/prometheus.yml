@@ -25,4 +25,8 @@ scrape_configs:
         regex: '(.*):5000'
         target_label: instance
         replacement: '${1}'
-#hi
+
+  - job_name: 'mysql'
+    metrics_path: /metrics 
+    static_configs:
+      - targets: ['mysqld_exporter:9104']

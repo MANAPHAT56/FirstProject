@@ -26,12 +26,31 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - type: bind
-        source: D:\\best\\xamppja\\tote
-        target: /var/lib/mysql
+      - mysql-data:/var/lib/mysql
+      # - type: bind
+      #   source: D:\\best\\xamppja\\tote
+      #   target: /var/lib/mysql
     networks:
       - monitor-net
+    command:
+      - --performance_schema=ON
 
+  mysqld_exporter:
+    image: prom/mysqld-exporter
+    command:
+       - --config.my-cnf="/cfg/.my.cnf"
+       - --mysqld.username=root:mypassword
+       - --mysqld.address=db:3306
+       - --collect.perf_schema.eventsstatements
+    volumes:
+       - "./.my.cnf:/cfg/.my.cnf"
+    ports:
+       - "9104:9104"
+    networks:
+       - monitor-net
+    depends_on:
+      - db
+   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin-container
@@ -84,7 +103,7 @@ services:
     image: prom/prometheus:latest
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus_data:/prometheus
+      - prometheus_data:/prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
@@ -92,6 +111,8 @@ services:
     restart: always
     networks:
       - monitor-net
+    ports:
+      - "9090:9090"
   node-exporter:
     image: prom/node-exporter:latest
     networks:
@@ -99,7 +120,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     volumes:
-      - ./grafana_data:/var/lib/grafana
+      - grafana_data:/var/lib/grafana
     depends_on:
       - prometheus
     ports:
@@ -113,3 +134,6 @@ networks:
 
 volumes:
   redis-data:
+  prometheus_data:
+  grafana_data:
+  mysql-data:
