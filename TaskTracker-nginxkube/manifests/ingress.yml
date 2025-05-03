@@ -11,8 +11,8 @@
       - host: tote.com
         http:
           paths:
-            - path: /phpmyadmin(/|$)(.*)
-              pathType: ImplementationSpecific
+            - path: /phpmyadmin
+              pathType:  Prefix
               backend:
                 service:
                   name: phpmyadmin-service
