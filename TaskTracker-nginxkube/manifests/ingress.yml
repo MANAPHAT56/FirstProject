@@ -12,7 +12,7 @@
         http:
           paths:
             - path: /phpmyadmin
-              pathType:  Prefix
+              pathType: Prefix
               backend:
                 service:
                   name: phpmyadmin-service
