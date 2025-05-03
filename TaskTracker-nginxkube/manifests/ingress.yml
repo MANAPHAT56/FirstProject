@@ -3,7 +3,7 @@
   metadata:
     name: node-server-ingress
     annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/rewrite-target: $2
       nginx.ingress.kubernetes.io/use-regex: "true"
   spec:
     ingressClassName: nginx
