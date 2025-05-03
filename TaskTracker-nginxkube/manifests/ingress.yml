@@ -2,7 +2,6 @@
   kind: Ingress
   metadata:
     name: node-server-ingress
-    namespace: default
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: /
       nginx.ingress.kubernetes.io/use-regex: "true"
