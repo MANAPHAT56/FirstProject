@@ -1,34 +1,38 @@
-  apiVersion: networking.k8s.io/v1
-  kind: Ingress
-  metadata:
-    name: node-server-ingress
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-      nginx.ingress.kubernetes.io/use-regex: "true"
-  spec:
-    ingressClassName: nginx
-    rules:
-      - host: tote.com
-        http:
-          paths:
-            - path: /phpmyadmin(/|$)(.*)
-              pathType: ImplementationSpecific
-              backend:
-                service:
-                  name: phpmyadmin-service
-                  port:
-                    number: 80
-            - path: /
-              pathType: Prefix
-              backend:
-                service:
-                  name: node-server-service
-                  port:
-                    number: 5000
-            - path: /redis
-              pathType: Prefix
-              backend:
-                service:
-                  name: redis-service
-                  port:
-                    number: 6379
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/gzip: "on"
+    nginx.ingress.kubernetes.io/gzip-types: "text/plain application/json text/css application/javascript application/x-javascript text/javascript"
+    nginx.ingress.kubernetes.io/gzip-min-length: "1000"
+    nginx.ingress.kubernetes.io/gzip-comp-level: "5"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - tote.com
+    secretName: tls-secret
+  rules:
+  - host: tote.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: node-server-service
+            port:
+              number: 5000
+      - path: /phpmyadmin
+        pathType: Prefix
+        backend:
+          service:
+            name: phpmyadmin-service
+            port:
+              number: 80
