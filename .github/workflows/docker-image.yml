@@ -62,7 +62,7 @@ jobs:
           curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
           unzip sonar-scanner.zip
           ./sonar-scanner-*/bin/sonar-scanner \
-            -Dsonar.projectKey=my-project \
-            -Dsonar.sources=src \
-            -Dsonar.host.url=http://<your-sonarqube-ip>:9000 \
+            -Dsonar.projectKey=18081978Best. \
+            -Dsonar.sources=TaskTracker-nginx
+            -Dsonar.host.url=http://localhost:9000\
             -Dsonar.login=$SONAR_TOKEN
