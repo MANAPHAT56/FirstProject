@@ -38,7 +38,7 @@ on:
 jobs:
   sonar:
     name: SonarQube Analysis
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Use the self-hosted runner
 
     steps:
       - uses: actions/checkout@v3
@@ -63,6 +63,6 @@ jobs:
           unzip sonar-scanner.zip
           ./sonar-scanner-*/bin/sonar-scanner \
             -Dsonar.projectKey=18081978Best. \
-            -Dsonar.sources=TaskTracker-nginx
-            -Dsonar.host.url=http://localhost:9000\
+            -Dsonar.sources=TaskTracker-nginx \
+            -Dsonar.host.url=http://localhost:9000 \
             -Dsonar.login=$SONAR_TOKEN
