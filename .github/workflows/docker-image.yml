@@ -55,6 +55,10 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
 
+      - name: Start SonarQube in Docker
+        run: |
+          docker run -d --name sonarqube -p 9000:9000 sonarqube:lts
+
       - name: Run SonarQube Scanner
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -63,7 +67,11 @@ jobs:
           unzip sonar-scanner.zip
           ./sonar-scanner-*/bin/sonar-scanner \
             -Dsonar.projectKey=18081978Best. \
-            -Dsonar.sources=TaskTracker-nginx
-            -Dsonar.host.url=http://localhost:9000\
+            -Dsonar.sources=TaskTracker-nginx \
+            -Dsonar.host.url=http://localhost:9000 \
             -Dsonar.login=$SONAR_TOKEN
-        
+
+      - name: Stop SonarQube Docker container
+        run: |
+          docker stop sonarqube
+          docker rm sonarqube
