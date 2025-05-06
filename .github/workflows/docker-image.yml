@@ -26,7 +26,6 @@
 #       - name: Push Docker image to Docker Hub
 #         run: |
 #           docker push manaphat/node-servernginx:grafana
-
 name: SonarQube Scan
 
 on:
