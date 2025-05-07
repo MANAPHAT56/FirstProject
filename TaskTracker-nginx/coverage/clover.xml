@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1746627395187" clover="3.2.0">
-  <project timestamp="1746627395187" name="All files">
+<coverage generated="1746636170736" clover="3.2.0">
+  <project timestamp="1746636170737" name="All files">
     <metrics statements="268" coveredstatements="39" conditionals="71" coveredconditionals="0" methods="42" coveredmethods="1" elements="381" coveredelements="40" complexity="0" loc="268" ncloc="268" packages="1" files="1" classes="1"/>
     <file name="router.js" path="D:\best\github\FirstProject\TaskTracker-nginx\router\router.js">
       <metrics statements="268" coveredstatements="39" conditionals="71" coveredconditionals="0" methods="42" coveredmethods="1"/>
