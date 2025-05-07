@@ -56,7 +56,6 @@ const authenticateJWT = (req, res, next) => {
       return res.redirect('/login');
     }
   }
-
   // ตรวจสอบ access token
   jwt.verify(token, secretKey, (err, user) => {
     if (err) {
@@ -559,25 +558,6 @@ const Events=[
     }
   }
   );
-  // router.post('/tasks',authenticateJWT, (req, res) => {
-  //   const { task } = req.body;
-  //   console.log('Request body:', req.body); 
-  //   if(req.user==undefined)return res.redirect('/login');
-  //   connection.query(`INSERT INTO  \`${req.user.username}\` (name,tasks) VALUES (?,?)`, [req.user.username,task], (err, results) => {
-  //       if (err) {
-  //         console.error('Error inserting task:', err);
-  //           return res.status(500).send('Error adding task');
-  //       }
-  //       client.del('users', (err, response) => {
-  //         if (err) {
-  //             console.log('Error deleting key:', err);
-  //         } else {
-  //             console.log('Key deleted successfully:', response);
-  //         }
-  //     });
-  //       res.redirect('/add-tasks'); // Redirect to the task list page after adding a task
-  //   });
-  // });
   router.post('/login',async (req,res)=>{
     try{
       const username=req.body.username;
@@ -620,108 +600,5 @@ const Events=[
 
     }
   })
-  // router.post('/refresh-token', (req, res) => {
-  //   const refreshToken = req.cookies.refreshToken;  // อ่าน Refresh Token จาก HTTP-only cookie
-  
-  //   if (!refreshToken) {
-  //     return res.redirect('/login');
-  //   }
-  
-  //   jwt.verify(refreshToken, secretKey, (err, user) => {
-  //     if (err) {
-  //       return res.status(403).send('Invalid or expired refresh token');
-  //     }
-  //   const {username,id}=user;
-  //     // สร้าง Access Token ใหม่
-  //     const accessToken = jwt.sign({ username : username,id:id }, secretKey, { expiresIn: '1m' });
-      
-  //     // ส่ง Access Token ใหม่ใน Cookie
-  //     res.cookie('token', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' ,maxAge: 300000});
-  //     res.cookie('refreshToken',accessToken, { httpOnly: true,secure:false, maxAge: 604800000 });
-  //     console.log("refreshed");
-  //     res.redirect('/login');
-  //   });
-  // });
-  
-
-
-  // router.get('/ui',async (req,res,next)=>{
-  //     res.json({msg:"Hi BUDYY",loo:"poopo"});
-  // })
-  // router.get('/user', async (req, res, next) => {
-  //   console.log('Connection object:', connection);
-  //   connection.query('SELECT * FROM `my_db`', (err, rows) => {
-  //     if (err) {
-  //       next(err); // Pass error to Express error handler
-  //       return;
-  //     }
-  //     res.json(rows);
-  //   });
-  // });
-  // router.get('/user/:id', async (req, res, next) => {
-  //         console.log('Connection object:', connection);
-  //         const id = req.params.id;
-  //         connection.query(
-  //           'SELECT * FROM user WHERE id = ?',
-  //           [id],
-  //           (err, results) => {
-  //             if (err) {
-  //               next(err); // Pass error to Express error handler
-  //               return;
-  //             }
-  //             res.json(results);
-  //           }
-  //         );
-  //       });
-  // router.post('/users',async function(req,res,next){
-  //   res.json(req.body);
-  //   console.log(req.body);
-  // })
-  // router.post('/hi/:id',async function(req,res,next){
-  //   connection.query(
-  //     'SELECT * FROM `my_db` WHERE `id` = ? AND `name` LIKE ? ',
-  //     [id,'w%'],
-  //     (err, results) => {
-  //       if (err) {
-  //         next(err); // Pass error to Express error handler
-  //         return;
-  //       }
-  //       res.json(results);
-  //     }
-  //   );
-  // })
-  // router.post('/hi/:id', async function(req, res, next) {
-  //   const id = req.params.id;
-    
-  //   // Assuming you want to filter names starting with 'W'
-  //   const query = 'SELECT * FROM my_db WHERE id = ? AND name LIKE ? ';
-    
-  //   // Parameters to be used in the query
-  //   const values = [id, 'w%'];
-
-  //   connection.query( 'SELECT * FROM my_db WHERE id = ? AND name LIKE ? ',[id, 'w%'], (err, results) => {
-  //     if (err) {
-  //       next(err); // Pass error to Express error handler
-  //       return;
-  //     }
-  //     res.json(results);
-  //   });
-  // });
-  // router.post('/insert', async function(req, res, next) {
-    
-    // Assuming you want to filter names starting with 'W'
-    // const query = 'INSERT INTO user(name,id,password) VALUES (?,?,?)';
-
-    // Parameters to be used in the query
-    // const {name,id,password} = req.body;
-    // const values=[name,id,password];
-
-  //   connection.query( query,values, (err, results) => {
-  //     if (err) {
-  //       next(err); // Pass error to Express error handler
-  //       return;
-  //     }
-  //     res.json(results);
-  //   });
-  // });
   module.exports=router;
+  module.exports = hashPassword;

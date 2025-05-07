@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "express-prometheus-middleware": "^1.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

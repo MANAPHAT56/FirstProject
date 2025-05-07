@@ -168,10 +168,17 @@
     "vary": "^1.1.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "start": "node app.js",
+    "scan": "docker-compose -f ../../Sonarqube/docker-compose-sona.yml up -d",
+    "coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "manaphat",
   "license": "MIT",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.0"
+  }
 }
