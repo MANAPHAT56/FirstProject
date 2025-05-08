@@ -25,6 +25,15 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker push manaphat/node-servernginx:grafana
+          - name: Install Trivy
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+            wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+            echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -cs) main" | \
+              sudo tee /etc/apt/sources.list.d/trivy.list > /dev/null
+            sudo apt-get update
+            sudo apt-get install -y trivy
       - name: Update Trivy DB
         run: trivy db update          
       - name: Run Trivy vulnerability scanner
