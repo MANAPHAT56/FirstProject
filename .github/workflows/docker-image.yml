@@ -25,6 +25,8 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker push manaphat/node-servernginx:grafana
+      - name: Update Trivy DB
+        run: trivy db update          
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
