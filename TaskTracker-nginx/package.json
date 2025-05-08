@@ -37,6 +37,7 @@
     "cookie-signature": "^1.0.6",
     "core-util-is": "^1.0.3",
     "cors": "^2.8.5",
+    "cross-spawn": "^7.0.5",
     "crypto-js": "^4.2.0",
     "debug": "^2.6.9",
     "define-data-property": "^1.1.4",
