@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "cross-spawn": "^7.0.5",
     "express-prometheus-middleware": "^1.2.0"
   },
   "devDependencies": {
