@@ -32,7 +32,7 @@ jobs:
             image-ref: 'manaphat/node-servernginx:grafana'
             exit-code: '0'  # Exit if vulnerabilities of severity 'CRITICAL' or 'HIGH' are found
             ignore-unfixed: true
-            vuln-type: 'os'
+            vuln-type: 'os,library'
             format: 'sarif'  # เปลี่ยนจาก --template เป็น --format
             output: 'trivy-results.sarif'
             severity: 'CRITICAL,HIGH'  
