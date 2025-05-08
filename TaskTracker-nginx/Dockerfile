@@ -4,13 +4,10 @@ FROM node:18
 WORKDIR /usr/src/app
 
 # คัดลอก package.json ก่อนเพื่อให้ npm install ทำงาน
-COPY ./package.json ./
+COPY ./package*.json ./
 
 # ติดตั้ง dependencies
 RUN npm install
-RUN npm audit
-RUN npm audit fix
-
 # คัดลอกไฟล์ทั้งหมดจากโฟลเดอร์ TaskTracker
 COPY . .
 
