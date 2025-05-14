@@ -132,13 +132,11 @@ const createTableoauth2 = (tableName) => {
       });
   });
 };
-module.exports = authenticateJWT;
-
 async function hashPassword(password) {
   try{
-    const hashedPassword= await bcrypt.hash(password,10);
-    console.log(hashPassword);
-    return hashedPassword;
+    const hashedPassword1= await bcrypt.hash(password,10);
+    console.log(hashedPassword1);
+    return hashedPassword1;
   }
       catch(err){
         throw new Error('Error hashing password: ' + err.message); 
@@ -601,4 +599,5 @@ const Events=[
     }
   })
   module.exports=router;
-  module.exports = hashPassword;
+  // module.exports = hashPassword;
+  

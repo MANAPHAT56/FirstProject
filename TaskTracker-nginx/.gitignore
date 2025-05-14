@@ -2,3 +2,7 @@
 dist/
 conf.d
 node_modules
+*.env
+hshicopvault/hshicopvault/.env
+hshicopvault/vault-config/token
+hshicopvault/hi.txt
