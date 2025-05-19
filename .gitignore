@@ -1,7 +1,7 @@
 *.log
 dist/
 conf.d
-node_modules
+node_modules/
 *.env
 *.key
 *.crt
