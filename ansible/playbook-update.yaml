@@ -1,4 +1,5 @@
 -
+
   name: Test aptitude update
   hosts: all
   become: true
@@ -6,7 +7,7 @@
     - name: Create test.txt file
       copy:
         src: ../../FirstPreject         # โฟลเดอร์ต้นทาง
-        dest: /opt/myfolder/     # โฟลเดอร์ปลายทาง
-        owner: root
+        dest:  usr/src/app/   # โฟลเดอร์ปลายทาง
+        owner: ubuntu
         group: root
         mode: '0755'
