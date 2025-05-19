@@ -93,13 +93,6 @@ app.get('/metrics', async (req, res) => {
   res.end(await promClient.register.metrics());
 });
 
-// --- HTTPS server setup (optionally) ---
-const options = {
-  key: fs.readFileSync("./OpenSSL-Win64/bin/privatekey.pem"),
-  cert: fs.readFileSync("./OpenSSL-Win64/bin/certificate.pem"),
-  ca: fs.readFileSync("./OpenSSL-Win64/bin/certificate.csr"),
-  passphrase: '18081978',
-};
 
 // ถ้าจะใช้ HTTPS ให้ uncomment ข้างล่าง
 // https.createServer(options, app).listen(5000, () => {
