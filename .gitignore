@@ -1,0 +1,9 @@
+*.log
+dist/
+conf.d
+node_modules
+*.env
+*.key
+*.crt
+secrets/
+hshicopvault/

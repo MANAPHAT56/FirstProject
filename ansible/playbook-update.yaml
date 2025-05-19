@@ -1,0 +1,12 @@
+-
+  name: Test aptitude update
+  hosts: all
+  become: true
+  tasks:
+    - name: Create test.txt file
+      copy:
+        content: "This is a test file created by Ansible\n"
+        dest: /tmp/test.txt
+        owner: root
+        group: root
+        mode: '0644'

@@ -1,10 +1,10 @@
 // db.js
 const path = require('path');  // เพิ่มบรรท
 const mysql = require('mysql2');
-require('dotenv').config({ path: path.resolve(__dirname, '../hshicopvault/secrets/mysql.env') });
+require('dotenv').config({ path: path.resolve(__dirname, './secrets/mysql.env') });
 // สร้าง connection pool
 const pool = mysql.createPool({
-  host: 'mysql-container', // ชื่อ service ของ MySQL ใน docker-compose
+  host:  process.env.MYSQL_HOST, // ชื่อ service ของ MySQL ใน docker-compose
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_ROOT_PASSWORD,
   database: process.env.MYSQL_DB,

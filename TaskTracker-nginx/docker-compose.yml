@@ -20,9 +20,11 @@ services:
   db:
     image: mysql:5.7.16
     container_name: mysql-container
-    environment:
+    environment:    
       MYSQL_ROOT_PASSWORD: mypassword
       MYSQL_DATABASE: my_db
+      MYSQL_USER: root
+
     ports:
       - "3306:3306"
     volumes:
