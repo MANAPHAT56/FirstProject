@@ -69,20 +69,17 @@ router.get("/coupons", authenticateJWT, async (req, res, next) => {
 router.get('/store/:id', async (req, res) => {
   const storeId = req.params.id;
   try {
-    connection.query('SELECT * FROM coupons WHERE storesid = ?;', [storeId], async (err, results) => {
-      if (results.length === 0) {
-        res.render('store', { coupons: results });
-      }
-      res.render('store', { coupons: results });
-    });
+    const results = await query('SELECT * FROM coupons WHERE storesid = ?', [storeId]);
+    res.render('store', { coupons: results });
   } catch (error) {
+    console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
 
+
 router.post('/coupon/:id', authenticateJWT, (req, res) => {
   const couponId = req.params.id;
-  try {
     connection.query('SELECT * FROM coupons WHERE id = ?', [couponId], (err, couponResults) => {
       if (err || couponResults.length === 0) return res.status(500).send('Database error');
       const storeId = couponResults[0].storesid;
@@ -94,14 +91,12 @@ router.post('/coupon/:id', authenticateJWT, (req, res) => {
         });
       });
     });
-  } catch (error) {
-    res.status(500).send('Internal Server Error');
-  }
+
 });
 
 router.post('/couponafter/:id', authenticateJWT, (req, res) => {
   const couponId = req.params.id;
-  try {
+
     connection.query('SELECT * FROM coupons WHERE id = ?', [couponId], (err, couponResults) => {
       if (err || couponResults.length === 0) return res.status(500).send('Database error');
       const storeId = couponResults[0].storesid;
@@ -113,9 +108,6 @@ router.post('/couponafter/:id', authenticateJWT, (req, res) => {
         });
       });
     });
-  } catch (error) {
-    res.status(500).send('Internal Server Error');
-  }
 });
 
 router.post('/redeem-coupon', authenticateJWT, async (req, res) => {
