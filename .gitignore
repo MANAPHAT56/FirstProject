@@ -7,3 +7,4 @@ conf.d
 *.crt
 secrets/
 hshicopvault/
+OpenSSL-Win64/
