@@ -4,10 +4,10 @@ const mysql = require('mysql2');
 require('dotenv').config({ path: path.resolve(__dirname, './secrets/mysql.env') });
 // สร้าง connection pool
 const pool = mysql.createPool({
-  host:  process.env.MYSQL_HOST, // ชื่อ service ของ MySQL ใน docker-compose
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_ROOT_PASSWORD,
-  database: process.env.MYSQL_DB,
+  host:  'mysql-container', // ชื่อ service ของ MySQL ใน docker-compose
+  user: 'root',
+  password: 'mypassword',
+  database: 'my_db',
   port: 3306,
   waitForConnections: true,
   connectionLimit: 10,   // จำนวน connection สูงสุดใน pool
@@ -20,6 +20,7 @@ pool.getConnection((err, connection) => {
     console.error('Error connecting to MySQL:', err.stack);
     return;
   }
+  
   console.log('Connected to MySQL successfully');
   connection.release(); // ปล่อย connection กลับไปใน pool
 });

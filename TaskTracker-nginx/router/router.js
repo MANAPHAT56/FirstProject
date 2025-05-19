@@ -262,7 +262,7 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
             console.error('Error retrieving user:', err);
             return res.status(500).json({ error: 'Error retrieving user' });
         }
-        if(results.length==0) return res.status(404).json({ error: 'User not found' });
+        if(results.length==0) return res.redirect('/admin')
         else{
         const userName = results[0].name; 
         connection.query('DELETE FROM user WHERE id = ?', [userId], (err, results) => {
@@ -272,7 +272,7 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
             }
 
             if (results.affectedRows === 0) {
-                return res.status(404).json({ error: 'User not found' });
+                return res.redirect('/admin');
             }
             const dropTableQuery = `DROP TABLE IF EXISTS \`${userName}\``;
             connection.query(dropTableQuery, (err, results) => {
@@ -280,7 +280,7 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
                     console.error('Error dropping table:', err);
                     return res.status(500).json({ error: 'Error dropping user table' });
                 }
-                return res.status(200).json({ error: "User and associated table deleted successfully" });;
+                return res.redirect('/admin');
             });
         });
     }});

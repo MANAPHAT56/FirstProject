@@ -4,10 +4,10 @@
   hosts: all
   become: true
   tasks:
-    - name: Create test.txt file
+    - name: Create FIxter file
       copy:
-        src: ../TaskTracker-nginx/secrets/mysql.env     # โฟลเดอร์ต้นทาง
-        dest:  FirstProject/TaskTracker-nginx/secrets/mysql.env   # โฟลเดอร์ปลายทาง
+        src: ../TaskTracker-nginx/router/router.js    # โฟลเดอร์ต้นทาง
+        dest:  FirstProject/TaskTracker-nginx/router/router.js  # โฟลเดอร์ปลายทาง
         owner: ubuntu
         group: root
         mode: '0755'

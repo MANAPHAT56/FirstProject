@@ -1,7 +1,6 @@
 console.log('Script loaded');
 document.querySelectorAll('.userdelete-form').forEach(form => {
     form.addEventListener('submit', async function(event) {
-     event.preventDefault()
       const userId = this.id.split('-')[2]; // Get the user ID from the form ID
       console.log('Attempting to delete user with ID:', userId);
         const formData = {
@@ -21,7 +20,7 @@ document.querySelectorAll('.userdelete-form').forEach(form => {
           if (!data.error) {
             // ถ้าไม่มี error = สำเร็จ
             alert("Coupon redeemed successfully!");
-            window.location.reload();
+            window.location.href='login';
           } else {
             // ถ้ามี error
             alert(data.error);

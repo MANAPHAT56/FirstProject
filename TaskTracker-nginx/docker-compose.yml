@@ -57,13 +57,15 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin-container
     environment:
-      PMA_HOST: mysql-container
+      PMA_HOST: db
       PMA_USER: root
       PMA_PASSWORD: mypassword
     ports:
       - "8081:80"
     networks:
       - monitor-net
+    depends_on:
+      - db
 
   redis:
     image: redis:latest
@@ -81,8 +83,12 @@ services:
     container_name: node-server
     ports:
       - "5001:5000"
+    volumes:
+      - ./secrets:/usr/src/app/secrets
     networks:
       - monitor-net
+    depends_on:
+      - db
 
   node-server2:
     build:
@@ -90,8 +96,12 @@ services:
     container_name: node-server2
     ports:
       - "5002:5000"
+    volumes:
+      - ./secrets:/usr/src/app/secrets
     networks:
       - monitor-net
+    depends_on:
+      - db
 
   node-server3:
     build:
@@ -101,6 +111,10 @@ services:
       - "5003:5000"
     networks:
       - monitor-net
+    volumes:
+      - ./secrets:/usr/src/app/secrets
+    depends_on:
+      - db
   prometheus:
     image: prom/prometheus:latest
     volumes:
