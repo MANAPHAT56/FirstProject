@@ -182,66 +182,93 @@ router.post('/couponafter/:id',authenticateJWT, (req, res) => {
       res.status(500).send('Internal Server Error');
   }
 });
-router.post('/redeem-coupon',authenticateJWT,async (req,res)=>{
-  // const datauser=await client.get('users');
-  // const datauser1=JSON.parse(datauser);
-  // if(datauser1[0].point<=)
-   const { couponId, couponImg, couponName } = req.body;
-  connection.query(`SELECT P_required FROM coupons WHERE id=?;`, [couponId], (err, results) => {
-    if (err) {
-      console.error('Error inserting task:', err);
-        return res.status(500).send('Error adding task');
-    }else{
-    const pointcoupon=results[0].P_required;
-    console.log(results);
-    console.log(pointcoupon+5);
-  connection.query(`SELECT point FROM user WHERE name=?;`, [req.user.username], (err, resultsuser) => {
-    if (err) {
-      console.error('Error inserting task:', err);
-        return res.status(500).send('Error adding task');
-    }else{
-    console.log(resultsuser)
-    console.log(resultsuser[0].point-pointcoupon);
-    if(resultsuser[0].point<pointcoupon){
-      return  res.status(400).json({ error: "Your point is not enough " });
-    }else{
-      console.log(req.user.id)
-      let afterpoint= resultsuser[0].point-pointcoupon;
-      client.del('point', (err, response) => {
-        if (err) {
-            console.log('Error deleting key:', err);
-        } else {
-            console.log("Key deleted successfully:", response);
-        }
-    });
-      connection.query('UPDATE user SET point = ? WHERE id = ?;',[afterpoint,req.user.id],(err,results)=>{
-        if(err){
-          console.log(err); 
-          return res.redirect('/login');
-        }
-          else{
-           
-   connection.query(`INSERT INTO  \`${req.user.username}\` (name,couponid,img) VALUES (?,?,?)`, [couponName,couponId,couponImg], (err, results) => {
-    if (err) {
-      console.error('Error inserting task:', err);
-        return res.status(500).send('Error adding task');
-    }
-    client.del('users', (err, response) => {
+router.post('/redeem-coupon', authenticateJWT, async (req, res) => {
+  const { couponId, couponImg, couponName } = req.body;
+
+  // 1. ดึง point ที่ต้องใช้จาก coupons
+  connection.query(
+    `SELECT P_required FROM coupons WHERE id = ?;`,
+    [couponId],
+    (err, results) => {
       if (err) {
-          console.log('Error deleting key:', err);
-      } else {
-          console.log('Key deleted successfully:', response);
+        console.error('Error fetching coupon data:', err);
+        return res.status(500).send('Error fetching coupon data');
       }
-  });
-  return res.status(200).json({message:"Exchange Coupon SUCCESSFUL"});
-});
+
+      const pointRequired = results[0]?.P_required;
+      if (!pointRequired) return res.status(400).send('Coupon not found');
+
+      // 2. ดึง point ของ user จากชื่อ
+      connection.query(
+        `SELECT point FROM user WHERE name = ?;`,
+        [req.user.username],
+        (err, userResults) => {
+          if (err) {
+            console.error('Error fetching user point:', err);
+            return res.status(500).send('Error fetching user data');
           }
-      });
+
+          const userPoint = userResults[0]?.point;
+          if (userPoint === undefined) {
+            return res.status(404).send('User not found');
+          }
+
+          // 3. ตรวจสอบว่าแต้มพอไหม
+          if (userPoint < pointRequired) {
+            return res.status(400).json({ error: "Your point is not enough" });
+          }
+
+          const newPoint = userPoint - pointRequired;
+
+          // ลบ cache redis
+          client.del('point', (err, response) => {
+            if (err) {
+              console.error('Error deleting point cache:', err);
+            } else {
+              console.log('Deleted point cache:', response);
+            }
+          });
+
+          // 4. อัปเดต point
+          connection.query(
+            `UPDATE user SET point = ? WHERE id = ?;`,
+            [newPoint, req.user.id],
+            (err) => {
+              if (err) {
+                console.error('Error updating user point:', err);
+                return res.status(500).send('Error updating user point');
+              }
+
+              // 5. เพิ่มข้อมูล coupon ที่แลกไว้ในตารางส่วนตัว
+              connection.query(
+                `INSERT INTO \`${req.user.username}\` (name, couponid, img) VALUES (?, ?, ?)`,
+                [couponName, couponId, couponImg],
+                (err) => {
+                  if (err) {
+                    console.error('Error inserting redeemed coupon:', err);
+                    return res.status(500).send('Error saving redeemed coupon');
+                  }
+
+                  // ลบ cache users
+                  client.del('users', (err, response) => {
+                    if (err) {
+                      console.error('Error deleting users cache:', err);
+                    } else {
+                      console.log('Deleted users cache:', response);
+                    }
+                  });
+
+                  return res.status(200).json({ message: "Exchange Coupon SUCCESSFUL" });
+                }
+              );
+            }
+          );
+        }
+      );
     }
-  }
+  );
 });
-}});
-});
+
 router.post('/usecoupon/:id',authenticateJWT,async(req,res)=>{
   console.log("**********");
   const id = req.params.id;
