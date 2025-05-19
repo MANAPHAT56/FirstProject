@@ -5,8 +5,8 @@
   tasks:
     - name: Create test.txt file
       copy:
-        content: "This is a test file created by Ansible\n"
-        dest: /tmp/test.txt
+        src: ../../FirstPreject         # โฟลเดอร์ต้นทาง
+        dest: /opt/myfolder/     # โฟลเดอร์ปลายทาง
         owner: root
         group: root
-        mode: '0644'
+        mode: '0755'

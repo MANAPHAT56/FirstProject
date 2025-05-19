@@ -23,7 +23,7 @@ document.getElementById('createTableForm').addEventListener('submit', function(e
             window.location.reload();
         }else{
             alert(data.error);
-             window.location.href='\login';
+             window.location.href='login';
         }
     })
     .catch(err => {

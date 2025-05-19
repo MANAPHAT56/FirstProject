@@ -8,33 +8,20 @@
   const secretKey = "your-secret-key";
   const axios = require('axios');
   const querystring = require('querystring');
-  let io;
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const CryptoJS = require("crypto-js");
-
-// ฟังก์ชันเข้ารหัส (AES)
 const encryptAES = (plainText) => {
   return CryptoJS.AES.encrypt(plainText, secretKey).toString();
 };
 
-// ฟังก์ชันถอดรหัส (AES)
 const decryptAES = (cipherText) => {
   const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
   return bytes.toString(CryptoJS.enc.Utf8);
 };
-
-  // function isAuthenticated(req, res, next) {
-  //   if (req.session && req.session.login) {
-  //     return next();
-  //   }
-  //   res.redirect('/login');
-  // }
 const authenticateJWT = (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
   const refreshToken = req.cookies.refreshToken;
 
   if (!token) {
-    // ตรวจสอบ refresh token หากไม่มี access token
     if (refreshToken) {
       return jwt.verify(refreshToken, secretKey, (err, user) => {
         if (err) {
@@ -42,21 +29,18 @@ const authenticateJWT = (req, res, next) => {
           return res.redirect('/login');
         }
 
-        // สร้าง access token ใหม่
         const { username, id } = user;
         const newToken = jwt.sign({ username, id }, secretKey, { expiresIn: '1m' });
 
-        // ตั้งค่า cookie ใหม่
         res.cookie('token', newToken, { httpOnly: true, secure: false, sameSite: 'Strict', maxAge: 300000 });
         req.user = user;
 
-        return next(); // ดำเนินการต่อ
+        return next();
       });
     } else {
       return res.redirect('/login');
     }
   }
-  // ตรวจสอบ access token
   jwt.verify(token, secretKey, (err, user) => {
     if (err) {
       console.error('Invalid access token:', err);
@@ -67,22 +51,19 @@ const authenticateJWT = (req, res, next) => {
             console.error('Invalid refresh token:', err);
             return res.redirect('/login');
           }
-          // สร้าง access token ใหม่
           const { username, id } = user;
           const newToken = jwt.sign({ username, id }, secretKey, { expiresIn: '1m' });
 
-          // ตั้งค่า cookie ใหม่
           res.cookie('token', newToken, { httpOnly: true, secure: false, sameSite: 'Strict', maxAge: 300000 });
           req.user = user;
 
-          return next(); // ดำเนินการต่อ
+          return next(); 
         });
       } else {
         return res.redirect('/login');
       }
     }
 
-    // หาก access token ถูกต้อง
     req.user = user;
     console.log(req.user);
     next();
@@ -144,16 +125,12 @@ async function hashPassword(password) {
   }
 router.get('/auth/google/callback', async (req, res, next) => {
     try {
-      const code = req.query.code; // รับ authorization code จาก query string
+      const code = req.query.code; 
       const codeVerifier = req.cookies.codeverifier;
       console.log(req.cookies.codeverifier);
-      // console.log(codeVerifier);
-      // const user =  req.cookies.user;
-      // console.log(user);
       if (!codeVerifier) {
-        throw new Error('Missing code verifier'); // ตรวจสอบว่ามี code_verifier หรือไม่
+        throw new Error('Missing code verifier'); 
       }
-      // แลกเปลี่ยนโค้ดเป็นโทเคน
       const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', querystring.stringify({
         code: code,
         client_id: process.env.GOOGLE_CLIENT_ID,
@@ -161,17 +138,15 @@ router.get('/auth/google/callback', async (req, res, next) => {
         redirect_uri: process.env.GOOGLE_CALLBACK_URL,
         grant_type: 'authorization_code',
         code_verifier: codeVerifier, // ส่ง code_verifier ที่นี่
-      }),// ต้องตั้งค่าให้ถูกต้อง
+      }),
   {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-  
-      // ดึงข้อมูล token
-      const { access_token, id_token } = tokenResponse.data;
+
+      const { access_token} = tokenResponse.data;
        console.log(access_token);
-      // ใช้ access_token ดึงข้อมูลผู้ใช้
       const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: { Authorization: `Bearer ${access_token}` }
       });
@@ -180,18 +155,12 @@ router.get('/auth/google/callback', async (req, res, next) => {
       console.log(id);
       const userInfojwt = jwt.sign({ username, id }, secretKey, { expiresIn: '1m' });
       res.cookie('user',userInfojwt, { 
-        httpOnly: true,  // คุกกี้นี้จะไม่สามารถเข้าถึงได้จาก JavaScript ในฝั่ง client
-        secure:true,  // ใช้ secure cookie เมื่อเป็น production 
+        httpOnly: true, 
+        secure:true,  
         maxAge: 3600000,
         samesite : "Strict"
       });   
-      // res.cookie('refreshToken',"hetrhew", { httpOnly: true,secure:false, maxAge: 604800000 });
       console.log(req.cookies.user);
-      // เก็บข้อมูลผู้ใช้ใน session หรือ database
-      // req.session.user = userInfo.data;
-      // req.user=req.session.user;
-      // console.log(req.session.user);
-      // รีไดเร็กต์ไปหน้า dashboard
       console.log(1);
       console.log(req.cookies.user);
       console.log(req.cookies); 
@@ -202,12 +171,11 @@ router.get('/auth/google/callback', async (req, res, next) => {
       console.log(1);
       console.log("wrong")
       console.log("Codeverify"+codeVerifier);
-      res.redirect('/'); // รีไดเร็กต์กลับไปหน้าแรกถ้ามีข้อผิดพลาด
+      res.redirect('/'); 
     }
   });
   router.get('/dashboard', (req, res) => {
     const token=req.cookies.user;
-    // const token=req.cookies.token;
     let userCookie=0;
     console.log(token);
     jwt.verify(token, secretKey, (err, user) => {
@@ -220,25 +188,17 @@ router.get('/auth/google/callback', async (req, res, next) => {
       }});
     console.log(req.cookies.user.sub);  
     console.log(req.cookies);
-    // if (!req.isAuthenticated()) {
-    //   return res.redirect('/');
-    // }
-  //   res.redirect('/');
-  //   console.log(userCookie);
-  // });
     console.log("kuy");
       const tableName=userCookie.username;
       console.log(tableName);
-      const id=0;
       connection.query('SELECT * FROM user WHERE name = ?;', [tableName], async (err, results) => {
         console.log(results);
         if(results.length==1){
-          // res.status(200).json({ message: "The name already exists " });
           const token = jwt.sign({username:results[0].name,id:results[0].id},secretKey,{expiresIn : '1m'});
           const refreshToken = jwt.sign(
             { username:results[0].name, id:results[0].id},
             secretKey,
-            { expiresIn: '7d' } // Refresh Token อาจมีอายุการใช้งานนานกว่า Access Token
+            { expiresIn: '7d' } 
           );
           res.cookie('token',token,{httpOnly:true,maxAge:300000,samesite:"Strict"});  
           res.cookie('refreshToken', refreshToken, { httpOnly: true,secure:false, maxAge: 604800000,samesite:"Strict"});
@@ -248,29 +208,22 @@ router.get('/auth/google/callback', async (req, res, next) => {
         console.log(results.length);
           res.clearCookie('token');
           res.clearCookie('refreshToken');
-      connection.query('INSERT INTO user (name,point) VALUES (?,?)', [tableName,0],async (err, results) => {
-        // if (err) {
-        //   console.log("มืชื่อนี้เเล้ว");
-        //    res.clearCookie('token');
-        //    res.clearCookie('refreshToken');
-        //    console.log(err);
-        //    return res.redirect('/');
-        // } else{
-        if(err)console.log(err);
-          await createTableoauth2(tableName);
-          const token = jwt.sign({username:tableName,id:0},secretKey,{expiresIn : '1m'});
-          const refreshToken = jwt.sign(
-            { username:tableName,id:0 },
-            secretKey,
-            { expiresIn: '7d' } // Refresh Token อาจมีอายุการใช้งานนานกว่า Access Token
-          );
-          res.cookie('token',token,{httpOnly:true,maxAge:300000,samesite:"Strict"});  
-          res.cookie('refreshToken', refreshToken, { httpOnly: true,secure:false, maxAge: 604800000,samesite:"Strict" });
-          return res.redirect('/tasks');
-        // }
+          connection.query('INSERT INTO user (name,point) VALUES (?,?)', [tableName, 0], async (err, results) => {
+            if (err) {
+              console.log(err);
+              return res.status(500).send('Database error'); // ออกก่อนถ้า error
+            }
+          
+            await createTableoauth2(tableName);
+          
+            const token = jwt.sign({ username: tableName, id: 0 }, secretKey, { expiresIn: '1m' });
+            const refreshToken = jwt.sign({ username: tableName, id: 0 }, secretKey, { expiresIn: '7d' });
+          
+            res.cookie('token', token, { httpOnly: true, maxAge: 300000, sameSite: "Strict" });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: false, maxAge: 604800000, sameSite: "Strict" });
+          
+            return res.redirect('/tasks');   
       });
-    // // res.render('tasks', { tasks : userCookie }); 
-    // res.redirect('/');
   }});
 });
 function queryDB(sql) {
@@ -282,7 +235,7 @@ function queryDB(sql) {
   });
 }
 router.get('/admin',authenticateJWT, async (req,res)=>{
-    let users,useroauths;
+    let useroauths;
     if(req.cookies==undefined)res.redirect('/login');
     else{
     if(req.user.username=="admin"){
@@ -304,8 +257,6 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
     if (!userId) {
         return res.status(400).json({ error: "User ID is required" });
     }
-    
-    // Query to get the user name before deleting
     connection.query("SELECT name FROM user WHERE id = ?", [userId], (err, results) => {
         if (err) {
             console.error('Error retrieving user:', err);
@@ -313,9 +264,7 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
         }
         if(results.length==0) return res.status(404).json({ error: 'User not found' });
         else{
-        const userName = results[0].name; // Get the user name
-
-        // SQL query to delete the user
+        const userName = results[0].name; 
         connection.query('DELETE FROM user WHERE id = ?', [userId], (err, results) => {
             if (err) {
                 console.error('Error deleting user:', err);
@@ -325,8 +274,6 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
             if (results.affectedRows === 0) {
                 return res.status(404).json({ error: 'User not found' });
             }
-
-            // Drop table associated with the user
             const dropTableQuery = `DROP TABLE IF EXISTS \`${userName}\``;
             connection.query(dropTableQuery, (err, results) => {
                 if (err) {
@@ -334,8 +281,6 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
                     return res.status(500).json({ error: 'Error dropping user table' });
                 }
                 return res.status(200).json({ error: "User and associated table deleted successfully" });;
-                
-                // Send success response
             });
         });
     }});
@@ -358,18 +303,9 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
       }
   });
     res.redirect('/');
-    // req.session.destroy((err)=>{
-    //   if(err){
-    //   console.error('Session destruction error:', err);
-    //   return res.status(500).send('Unable to log out. Please try again.');
-    //   }
-    // });
-    //  res.redirect('/');
-
-
   });
   router.post('/create-table', async (req, res) => {
-    const tableName = req.body.name;  // Get the table name from the request body
+    const tableName = req.body.name;  
     const id=0;
     console.log(id);
     console.log("Kuy");
@@ -394,7 +330,6 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
     }else{
       console.log(results[0]);
       res.status(200).json({ message: "The name already exists " });
-    // return res.redirect('/login');
   }})
   });
   router.get('/login',async (req,res)=>{
@@ -599,5 +534,5 @@ const Events=[
     }
   })
   module.exports=router;
-  // module.exports = hashPassword;
+
   
