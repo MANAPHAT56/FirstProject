@@ -27,7 +27,7 @@ jobs:
         run: |
           docker push manaphat/node-servernginx:grafana
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@v0.30.0
         with:
             image-ref: 'manaphat/node-servernginx:grafana'
             exit-code: '0'  # Exit if vulnerabilities of severity 'CRITICAL' or 'HIGH' are found
