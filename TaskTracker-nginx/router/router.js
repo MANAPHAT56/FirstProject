@@ -314,7 +314,7 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
       return res.status(500).send('Table name is required.');
     }
     connection.query('SELECT name FROM user WHERE name = ?', [tableName], async (err, results) => {
-    if(results[0]==undefined || results.length!==1){
+      if (!results || results.length !== 1){
       res.clearCookie('token');
       res.clearCookie('refreshToken');
       connection.query('INSERT INTO user (name,password,id,point) VALUES (?,?,?,?)', [tableName,password,id,0], (err, results) => {

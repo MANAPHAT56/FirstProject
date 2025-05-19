@@ -6,8 +6,8 @@
   tasks:
     - name: Create test.txt file
       copy:
-        src: ../TaskTracker-nginx/docker-compose.yml       # โฟลเดอร์ต้นทาง
-        dest:  docker-compose.yml   # โฟลเดอร์ปลายทาง
+        src: ../TaskTracker-nginx/secrets/mysql.env     # โฟลเดอร์ต้นทาง
+        dest:  FirstProject/TaskTracker-nginx/secrets/mysql.env   # โฟลเดอร์ปลายทาง
         owner: ubuntu
         group: root
         mode: '0755'
