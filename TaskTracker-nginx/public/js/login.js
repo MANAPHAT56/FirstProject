@@ -75,33 +75,3 @@ function generateRandomString(length) {
 
 
 
-// const addTaskButton = document.getElementById('username');
-// const taskInput = document.getElementById('password');
-
-// addTaskButton.addEventListener('submit', async () => {
-//     const taskText = taskInput.value.trim();
-    
-//     if (!taskText) {
-//         console.log('Error: Task input is empty');
-//         return;
-//     }
-
-//     try {
-//         const response = await fetch('/logintasks', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ task: taskText }) // Ensure this is correctly set
-//         });
-
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-
-//         taskInput.value = ''; // Clear the input field after successful submission
-//         window.location.href = '/tasks'; // Redirect to the task list page after adding a task
-//     } catch (error) {
-//         console.error('There was a problem with the fetch operation:', error);
-//     }
-// });
