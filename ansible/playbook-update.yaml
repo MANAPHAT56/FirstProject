@@ -6,8 +6,8 @@
   tasks:
     - name: Create test.txt file
       copy:
-        src: ../../FirstPreject         # โฟลเดอร์ต้นทาง
-        dest:  usr/src/app/   # โฟลเดอร์ปลายทาง
+        src: ../../FirstPreject/TaskTracker-nginx/docker-compose.yml       # โฟลเดอร์ต้นทาง
+        dest:  usr/src/app/docker-compose.yml   # โฟลเดอร์ปลายทาง
         owner: ubuntu
         group: root
         mode: '0755'
