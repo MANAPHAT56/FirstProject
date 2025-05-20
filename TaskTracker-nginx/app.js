@@ -16,7 +16,7 @@ const promClient = require('prom-client');
 dotenv.config();
 
 const app = express();
-const connection = require('./db');
+const connection = require('./db').default;
 
 // --- Middleware ---
 app.use(session({
