@@ -1,4 +1,4 @@
-const rateLimit = require("express-rate-limit");
+// const rateLimit = require("express-rate-limit");
 const newrelic = require('newrelic');
 const jwt = require('jsonwebtoken');
 const path = require("path");
@@ -16,7 +16,7 @@ const promClient = require('prom-client');
 dotenv.config();
 
 const app = express();
-const connection = require('./db').default;
+const connection = require('./db');
 
 // --- Middleware ---
 app.use(session({
@@ -42,19 +42,19 @@ app.use((req, res, next) => {
   next();
 });
 
-// --- Rate Limiting ---
-const limiter = rateLimit({
-  windowMs: 1000 * 60, // 1 minute
-  max: 50,
-  message: "Too many requests, please try again later.",
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (req, res) => {
-    console.log(`⛔ Blocked: ${req.ip}`);
-    res.status(429).json({ error: "Too many requests, please try again later." });
-  }
-});
-app.use(limiter);
+// // --- Rate Limiting ---
+// const limiter = rateLimit({
+//   windowMs: 1000 * 60, // 1 minute
+//   max: 50,
+//   message: "Too many requests, please try again later.",
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   handler: (req, res) => {
+//     console.log(`⛔ Blocked: ${req.ip}`);
+//     res.status(429).json({ error: "Too many requests, please try again later." });
+//   }
+// });
+// app.use(limiter);
 
 // --- Prometheus Metrics ---
 // ป้องกัน duplicate metrics
