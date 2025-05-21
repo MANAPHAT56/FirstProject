@@ -10,6 +10,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./tls.crt:/etc/nginx/ssl/fullchain.pem
       - ./tls.key:/etc/nginx/ssl/privkey.pem
+      - ./.grafana.htpasswd:/etc/nginx/.grafana.htpasswd
     depends_on:
       - node-server
     networks:
@@ -42,8 +43,6 @@ services:
        - --collect.perf_schema.eventsstatements
     volumes:
        - "./.my.cnf:/cfg/.my.cnf"
-    ports:
-       - "9104:9104"
     networks:
        - monitor-net
     depends_on:
@@ -107,8 +106,6 @@ services:
       - prometheus
     networks:
       - monitor-net
-    ports:
-      - "3000:3000"
     restart: always
 
 networks:
