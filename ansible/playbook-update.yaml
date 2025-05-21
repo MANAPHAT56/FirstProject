@@ -6,8 +6,8 @@
   tasks:
     - name: Create FIxter file
       copy:
-        src: ../TaskTracker-nginx/nginx.conf  # โฟลเดอร์ต้นทาง
-        dest:  FirstProject/TaskTracker-nginx/nginx.conf # โฟลเดอร์ปลายทาง
+        src: /mnt/d/best/github/firstproject/TaskTracker-nginx/secrets
+        dest:  /home/ubuntu/FirstProject/TaskTracker-nginx/secrets # โฟลเดอร์ปลายทาง
         owner: ubuntu
         group: root
         mode: '0755'
