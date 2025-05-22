@@ -7,7 +7,7 @@
     - name: Create FIxter file
       copy:
         src: /mnt/d/best/github/firstproject/TaskTracker-nginx/secrets
-        dest:  /home/ubuntu/FirstProject/TaskTracker-nginx/secrets # โฟลเดอร์ปลายทาง
+        dest:  /home/ubuntu/FirstProject/TaskTracker-nginx/ # โฟลเดอร์ปลายทาง
         owner: ubuntu
         group: root
         mode: '0755'

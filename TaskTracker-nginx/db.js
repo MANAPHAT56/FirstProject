@@ -8,6 +8,7 @@ const pool = mysql.createPool({
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_ROOT_PASSWORD,
   database: process.env.MYSQL_DATABASE,
+  port: 3306,
   waitForConnections: true,
   connectionLimit: 10,   // จำนวน connection สูงสุดใน pool
   queueLimit: 0          // ไม่จำกัดจำนวน queue ที่รอ connection

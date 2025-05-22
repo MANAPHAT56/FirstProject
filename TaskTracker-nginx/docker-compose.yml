@@ -10,7 +10,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./tls.crt:/etc/nginx/ssl/fullchain.pem
       - ./tls.key:/etc/nginx/ssl/privkey.pem
-      - ./.grafana.htpasswd:/etc/nginx/.grafana.htpasswd
+      - ./secrets/.grafana.htpasswd:/etc/nginx/.grafana.htpasswd
     depends_on:
       - node-server
     networks:
