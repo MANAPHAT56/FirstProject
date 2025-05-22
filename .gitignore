@@ -9,4 +9,4 @@ secrets/
 hshicopvault/
 OpenSSL-Win64/
 ansible
-reverseproxy
+reverseproxy/
