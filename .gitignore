@@ -8,4 +8,4 @@ node_modules/
 secrets/
 hshicopvault/
 OpenSSL-Win64/
-ansible/
+ansible
