@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <%- include('navbar') %>
     <div class="login-container">
-        <img src="../images/Tote+4.png" alt="">
+        <img src="/images/Tote+4.png" alt="Tote Logo">
         <h2>Login</h2>
         <form action="/login" method="POST">
             <div class="input-group">
-                <label for="username"><strong>  Username:</strong></label>
+                <label for="username"><strong>Username:</strong></label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="input-group">
-                <label for="password"><strong>  Password:</strong></label>
+                <label for="password"><strong>Password:</strong></label>
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit"><strong>Login</strong></button>
@@ -26,11 +26,12 @@
         <!-- ปุ่มล็อกอินด้วย Google -->
         <div class="google-login">
             <button id="login" class="google-btn">
-                <img src="../images/google.jpg" alt="Google Logo"> 
+                <img src="/images/google.jpg" alt="Google Logo"> 
                 <strong>Login with Google</strong>
             </button>
         </div>
     </div>
-    <script type="module" src="../js/login.js"></script>
+
+    <script type="module" src="/js/login.js"></script>
 </body>
 </html>
