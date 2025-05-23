@@ -11,7 +11,7 @@ services:
       - ./tls.crt:/etc/nginx/ssl/fullchain.pem
       - ./tls.key:/etc/nginx/ssl/privkey.pem
       - ./secrets/.grafana.htpasswd:/etc/nginx/.grafana.htpasswd
-      - ./public:/var/www/html:ro
+      - ./public:/var/www/html/assets:ro
     depends_on:
       - node-server
     networks:
@@ -101,7 +101,7 @@ services:
     container_name: grafana-container
     environment:
       GF_SERVER_HTTP_ADDR: "0.0.0.0"
-      GF_SERVER_ROOT_URL: "https://tote.com/grafana"
+      GF_SERVER_ROOT_URL: "https://tote.com/grafana/"
       GF_SERVER_SERVE_FROM_SUB_PATH: "true"
     volumes:
       - grafana_data:/var/lib/grafana
