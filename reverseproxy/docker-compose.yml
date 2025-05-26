@@ -1,0 +1,20 @@
+services:
+  reverseproxy:
+    image: reverseproxy
+    # container_name: reverseproxy
+    build:
+       context: .
+       dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    # ports:
+    #   - 3000:3000
+  nginx:
+    container_name: kuy
+    image: nginx:latest
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+    depends_on:
+      - reverseproxy
+    ports:  
+      - "3000:3000"
