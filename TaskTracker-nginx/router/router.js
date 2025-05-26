@@ -9,7 +9,7 @@
   const axios = require('axios');
   const querystring = require('querystring');
 const CryptoJS = require("crypto-js");
-require('dotenv').config({ path: path.resolve(__dirname, '../publicc/js/.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../public/js/.env') });
 const encryptAES = (plainText) => {
   return CryptoJS.AES.encrypt(plainText, secretKey).toString();
 };
@@ -124,21 +124,29 @@ async function hashPassword(password) {
         throw new Error('Error hashing password: ' + err.message); 
       }
   }
-router.get('/auth/google/callback', async (req, res, next) => {
+  router.get('/auth/google/callback', (req, res) => {
+    res.render('../view/goologin.ejs');
+  });
+router.post('/auth/google/callback', async (req, res, next) => {
     try {
-      const code = req.query.code; 
-      const codeVerifier = req.cookies.codeverifier;
-      console.log(req.cookies.codeverifier);
-      if (!codeVerifier) {
-        throw new Error('Missing code verifier'); 
-      }
+         client.del('users', (err, response) => {
+      if (err) {
+          console.log('Error deleting key:', err);
+      } else {
+          console.log('Key deleted successfully:', response);
+        }});
+     res.clearCookie('token');
+     res.clearCookie('refreshToken');
+     res.clearCookie('user');
+    const { code, codeVerifier } = req.body;
+  if (!codeVerifier) return res.status(400).send('Missing code_verifier');
       const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', querystring.stringify({
         code: code,
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
         redirect_uri: process.env.GOOGLE_CALLBACK_URL,
         grant_type: 'authorization_code',
-        code_verifier: codeVerifier, // ส่ง code_verifier ที่นี่
+        code_verifier: codeVerifier // ใช้ code_verifier ที่เก็บไว้ใน localStorage
       }),
   {
         headers: {
@@ -166,7 +174,7 @@ router.get('/auth/google/callback', async (req, res, next) => {
       console.log(req.cookies.user);
       console.log(req.cookies); 
       console.log("Codeverify"+codeVerifier);
-      res.redirect('/dashboard');
+      res.status(200).json({ success: true });
     } catch (err) {
       console.error(err);
       console.log(1);
@@ -296,6 +304,7 @@ router.get('/admin',authenticateJWT, async (req,res)=>{
     res.clearCookie('token');
     res.clearCookie('refreshToken');
     res.clearCookie('user');
+
     client.del('users', (err, response) => {
       if (err) {
           console.log('Error deleting key:', err);
@@ -517,6 +526,15 @@ const Events=[
             res.redirect('/login');
         }
         else{
+             client.del('users', (err, response) => {
+      if (err) {
+          console.log('Error deleting key:', err);
+      } else {
+          console.log('Key deleted successfully:', response);
+        }});
+          res.clearCookie('token');
+    res.clearCookie('refreshToken');
+    res.clearCookie('user');
             const token = jwt.sign({username:results[0].name,id:results[0].id },secretKey,{expiresIn : '1m'});
             const refreshToken = jwt.sign(
               { username: results[0].name, id: results[0].id },
