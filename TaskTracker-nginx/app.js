@@ -19,11 +19,12 @@ const app = express();
 const connection = require('./db');
 
 // --- Middleware ---
-app.use(session({
-  secret: "kuy",
-  resave: false,
-  saveUninitialized: true,
-}));
+// app.use(session({
+//   secret: "kuy",
+//   resave: false,
+//   saveUninitialized: true,
+// }));
+app.set('trust proxy', true);
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, './public')));
 app.use(express.urlencoded({ extended: false }));
@@ -42,19 +43,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// // --- Rate Limiting ---
-// const limiter = rateLimit({
-//   windowMs: 1000 * 60, // 1 minute
-//   max: 50,
-//   message: "Too many requests, please try again later.",
-//   standardHeaders: true,
-//   legacyHeaders: false,
-//   handler: (req, res) => {
-//     console.log(`⛔ Blocked: ${req.ip}`);
-//     res.status(429).json({ error: "Too many requests, please try again later." });
-//   }
-// });
-// app.use(limiter);
 
 // --- Prometheus Metrics ---
 // ป้องกัน duplicate metrics
@@ -92,12 +80,6 @@ app.get('/metrics', async (req, res) => {
   res.set('Content-Type', promClient.register.contentType);
   res.end(await promClient.register.metrics());
 });
-
-
-// ถ้าจะใช้ HTTPS ให้ uncomment ข้างล่าง
-// https.createServer(options, app).listen(5000, () => {
-//   console.log('Server is running on HTTPS port 5000');
-// });
 
 // ตอนนี้ใช้ HTTP ก่อน
 app.listen(5000, () => {
