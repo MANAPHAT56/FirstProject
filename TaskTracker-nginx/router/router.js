@@ -9,7 +9,7 @@
   const axios = require('axios');
   const querystring = require('querystring');
 const CryptoJS = require("crypto-js");
-require('dotenv').config({ path: path.resolve(__dirname, '../public/js/.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const encryptAES = (plainText) => {
   return CryptoJS.AES.encrypt(plainText, secretKey).toString();
 };
