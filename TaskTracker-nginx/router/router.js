@@ -206,8 +206,8 @@ router.post('/auth/google/callback', async (req, res, next) => {
             secretKey,
             { expiresIn: '7d' } 
           );
-          res.cookie('token',token,{httpOnly:true,maxAge:300000,samesite:"Strict",secure:true});  
-          res.cookie('refreshToken', refreshToken, { httpOnly: true,secure:true, maxAge: 604800000,samesite:"Strict"});
+          res.cookie('token',token,{httpOnly:true,maxAge:300000,samesite:"Lax",secure:true});  
+          res.cookie('refreshToken', refreshToken, { httpOnly: true,secure:true, maxAge: 604800000,samesite:"Lax"});
           return res.redirect('/tasks');
         }
       else{
@@ -225,8 +225,8 @@ router.post('/auth/google/callback', async (req, res, next) => {
             const token = jwt.sign({ username: tableName, id: 0 }, secretKey, { expiresIn: '1m' });
             const refreshToken = jwt.sign({ username: tableName, id: 0 }, secretKey, { expiresIn: '7d' });
           
-            res.cookie('token', token, { httpOnly: true, maxAge: 300000, sameSite: "Strict",secure:true });
-            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: 604800000, sameSite: "Strict" });
+            res.cookie('token', token, { httpOnly: true, maxAge: 300000, sameSite: "Lax",secure:true });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: 604800000, sameSite: "Lax" });
           
             return res.redirect('/tasks');   
       });
@@ -537,8 +537,8 @@ const Events=[
               { expiresIn: '7d' } // Refresh Token อาจมีอายุการใช้งานนานกว่า Access Token
             );
             console.log(token+"htjjteejej");
-            res.cookie('token',token,{httpOnly:true,maxAge:300000,samesite:"Strict",secure:true});
-            res.cookie('refreshToken', refreshToken, { httpOnly: true,secure:true, maxAge: 604800000,samesite:"Strict" });
+            res.cookie('token',token,{httpOnly:true,maxAge:300000,samesite:"Lax",secure:true});
+            res.cookie('refreshToken', refreshToken, { httpOnly: true,secure:true, maxAge: 604800000,samesite:"Lax" });
             console.log(req.user);
             res.redirect('/tasks');
         }
