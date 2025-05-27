@@ -135,9 +135,6 @@ router.post('/auth/google/callback', async (req, res, next) => {
       } else {
           console.log('Key deleted successfully:', response);
         }});
-     res.clearCookie('token');
-     res.clearCookie('refreshToken');
-     res.clearCookie('user');
     const { code, codeVerifier } = req.body;
   if (!codeVerifier) return res.status(400).send('Missing code_verifier');
       const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', querystring.stringify({
@@ -532,9 +529,7 @@ const Events=[
       } else {
           console.log('Key deleted successfully:', response);
         }});
-          res.clearCookie('token');
-    res.clearCookie('refreshToken');
-    res.clearCookie('user');
+          res.clearCookie('user');
             const token = jwt.sign({username:results[0].name,id:results[0].id },secretKey,{expiresIn : '1m'});
             const refreshToken = jwt.sign(
               { username: results[0].name, id: results[0].id },
