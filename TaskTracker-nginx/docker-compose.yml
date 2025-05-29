@@ -8,10 +8,10 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      # - /etc/letsencrypt/live/toteja.co/fullchain.pem:/etc/nginx/ssl/fullchain.pem
-      # - /etc/letsencrypt/live/toteja.co/privkey.pem:/etc/nginx/ssl/privkey.pem
-      - ./tls.crt:/etc/nginx/ssl/fullchain.pem
-      - ./tls.key:/etc/nginx/ssl/privkey.pem
+      - /etc/letsencrypt/live/toteja.co/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      - /etc/letsencrypt/live/toteja.co/privkey.pem:/etc/nginx/ssl/privkey.pem
+      # - ./tls.crt:/etc/nginx/ssl/fullchain.pem
+      # - ./tls.key:/etc/nginx/ssl/privkey.pem
       - ./secrets/.grafana.htpasswd:/etc/nginx/.grafana.htpasswd
       - ./public:/var/www/html/assets:ro
     depends_on:
