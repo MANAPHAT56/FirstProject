@@ -22,22 +22,22 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker image for Node.js
         run: |
-          docker build -t manaphat/node-servernginx:grafana ./TaskTracker-nginx
+          docker build -t manaphat/node-servernginx:kube ./TaskTracker-nginxkube
       - name: Push Docker image to Docker Hub
         run: |
-          docker push manaphat/node-servernginx:grafana
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-            image-ref: 'manaphat/node-servernginx:grafana'
-            exit-code: '0'  # Exit if vulnerabilities of severity 'CRITICAL' or 'HIGH' are found
-            ignore-unfixed: true
-            vuln-type: 'os,library'
-            format: 'sarif'  # เปลี่ยนจาก --template เป็น --format
-            output: 'trivy-results.sarif'
-            severity: 'CRITICAL,HIGH'  
-        continue-on-error: true  # ไม่ให้ workflow fail แม้เจอช่องโหว่
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results.sarif'
+          docker push manaphat/node-servernginx:kube
+      # - name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #       image-ref: 'manaphat/node-servernginx:grafana'
+      #       exit-code: '0'  # Exit if vulnerabilities of severity 'CRITICAL' or 'HIGH' are found
+      #       ignore-unfixed: true
+      #       vuln-type: 'os,library'
+      #       format: 'sarif'  # เปลี่ยนจาก --template เป็น --format
+      #       output: 'trivy-results.sarif'
+      #       severity: 'CRITICAL,HIGH'  
+      #   continue-on-error: true  # ไม่ให้ workflow fail แม้เจอช่องโหว่
+      # - name: Upload Trivy scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   with:
+      #     sarif_file: 'trivy-results.sarif'
