@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User List</title>
+  <link rel="stylesheet" href="/assets/css/user12.css">
+</head>
+<body>
+  <%- include('navbar') %>
+  <h1 id="lp">User List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user => { %>
+        <tr id="userdelete-<%= user.id %>">
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.password %></td>
+          <td>
+            <form id="userdelete-form-<%= user.id %>" action="/delete/<%= user.id %>" method="POST" class="userdelete-form">
+              <button type="submit" style="background-color: red; color: white;" title="Delete User">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <script src="/assets/js/user1.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# .codiumai.toml
+
+[general]
+# You can specify language preferences, code styles, etc.
+language = "javascript"
+
+[tests]
+# Set the test framework (e.g., Jest, Mocha, etc.)
+framework = "jest"
+# Enable or disable certain features
+enableEdgeCases = true
