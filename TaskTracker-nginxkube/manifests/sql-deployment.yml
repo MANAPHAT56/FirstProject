@@ -1,0 +1,38 @@
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7.16
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "mypassword"
+        - name: MYSQL_DATABASE
+          value: "my_db"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-storage
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+  type: ClusterIP
+---
+# manual-storageclass.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: manual
+provisioner: kubernetes.io/no-provisioner  # สำหรับ local storage
+volumeBindingMode: WaitForFirstConsumer
