@@ -12,14 +12,15 @@ metadata:
     nginx.ingress.kubernetes.io/gzip-min-length: "1000"
     nginx.ingress.kubernetes.io/gzip-comp-level: "5"
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - tote.com
-    secretName: tls-secret
+    - toteja1.co
+    secretName: local-dev-ssl
   rules:
-  - host: tote.com
+  - host: toteja1.co
     http:
       paths:
       - path: /
@@ -29,10 +30,10 @@ spec:
             name: node-server-service
             port:
               number: 5000
-      - path: /phpmyadmin
+      - path: /adminer
         pathType: Prefix
         backend:
           service:
-            name: phpmyadmin-service
+            name: adminer-service
             port:
               number: 80

@@ -17,14 +17,19 @@ spec:
         image: nginx
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: nginx-config-volume
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
-      volumes:
-      - name: nginx-config-volume
-        configMap:
-          name: nginx-config
+      #   volumeMounts:
+      #   - name: nginx-config-volume
+      #     mountPath: /etc/nginx/nginx.conf
+      #     subPath: nginx.conf
+      #   - name: ssl-certs
+      #     mountPath: /etc/nginx/ssl  
+      # volumes:
+      # - name: nginx-config-volume
+      #   configMap:
+      #     name: nginx-config
+      # - name: ssl-certs
+      #   secret:
+      #     secretName: local-dev-ssl
 ---
 apiVersion: v1
 kind: Service
