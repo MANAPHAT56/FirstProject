@@ -23,7 +23,7 @@ spec:
   - host: toteja1.co
     http:
       paths:
-      - path: /app(/|$)(.*)  # ใช้ Path /app สำหรับ App หลัก
+      - path: / # ใช้ Path /app สำหรับ App หลัก
         pathType: Prefix
         backend:
           service:
