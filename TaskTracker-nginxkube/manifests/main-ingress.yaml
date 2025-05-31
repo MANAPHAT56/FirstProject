@@ -17,10 +17,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - toteja1.co
+    - 127.0.0.1
     secretName: local-dev-ssl
   rules:
-  - host: toteja1.co
+  - host: 127.0.0.1
     http:
       paths:
       - path: / # ใช้ Path /app สำหรับ App หลัก
