@@ -17,10 +17,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - toteja1.co
+    - toteja1.coja
     secretName: local-dev-ssl
   rules:
-  - host: toteja1.co
+  - host: toteja1.coja
     http:
       paths:
       - path: /
