@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/gzip-types: "text/plain application/json text/css application/javascript application/x-javascript text/javascript"
     nginx.ingress.kubernetes.io/gzip-min-length: "1000"
     nginx.ingress.kubernetes.io/gzip-comp-level: "5"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
@@ -23,7 +23,7 @@ spec:
   - host: toteja1.co
     http:
       paths:
-      - path: /
+      - path: /app(/|$)(.*)  # ใช้ Path /app สำหรับ App หลัก
         pathType: Prefix
         backend:
           service:
