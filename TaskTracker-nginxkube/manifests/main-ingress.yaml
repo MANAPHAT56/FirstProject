@@ -29,7 +29,7 @@ spec:
           service:
             name: node-server-service
             port:
-              number: 5001
+              number: 5000
       # - path: /adminer
       #   pathType: Prefix
       #   backend:
