@@ -26,6 +26,6 @@ spec:
   selector:
     app: node-server
   ports:
-  - port: 5001
+  - port: 5000
     targetPort: 5000
   type: ClusterIP
