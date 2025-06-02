@@ -1,0 +1,10 @@
+.git
+logs
+build
+.DS_Store
+node_modules/
+*.key
+*.crt
+OpenSSL-Win64/
+.dockerignore
+ืnpm-debug.log

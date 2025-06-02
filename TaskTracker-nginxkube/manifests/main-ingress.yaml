@@ -1,39 +1,65 @@
+#DEV////
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: main-ingress
+#   annotations:
+#     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+#     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+#     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+#     nginx.ingress.kubernetes.io/gzip: "on"
+#     nginx.ingress.kubernetes.io/gzip-types: "text/plain application/json text/css application/javascript application/x-javascript text/javascript"
+#     nginx.ingress.kubernetes.io/gzip-min-length: "1000"
+#     nginx.ingress.kubernetes.io/gzip-comp-level: "5"
+#     nginx.ingress.kubernetes.io/rewrite-target: /$1
+#     nginx.ingress.kubernetes.io/use-regex: "true"
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#   - hosts:
+#     - toteja.co
+#     secretName: local-dev-ssl
+#   rules:
+#   - host: toteja.co
+#     http:
+#       paths:
+#       - path: / # ใช้ Path /app สำหรับ App หลัก
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: node-server-service
+#             port:
+#               number: 5000
+#       - path: /adminer(/|$)(.*)
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: adminer-service
+#             port:
+#               number: 80
+# myweb-ingress.yaml
+#Production////
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: main-ingress
+  name: webapp-ingress
+  namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    nginx.ingress.kubernetes.io/gzip: "on"
-    nginx.ingress.kubernetes.io/gzip-types: "text/plain application/json text/css application/javascript application/x-javascript text/javascript"
-    nginx.ingress.kubernetes.io/gzip-min-length: "1000"
-    nginx.ingress.kubernetes.io/gzip-comp-level: "5"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT_ID:certificate/yyyyyyyy
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
-  ingressClassName: nginx
-  tls:
-  - hosts:
-    - toteja1.co
-    secretName: local-dev-ssl
   rules:
-  - host: toteja1.co
-    http:
-      paths:
-      - path: / # ใช้ Path /app สำหรับ App หลัก
-        pathType: Prefix
-        backend:
-          service:
-            name: node-server-service
-            port:
-              number: 5000
-      - path: /adminer(/|$)(.*)
-        pathType: Prefix
-        backend:
-          service:
-            name: adminer-service
-            port:
-              number: 80
+    - host: myweb.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: your-web-service
+                port:
+                  number: 80
