@@ -5,7 +5,6 @@ node_modules/
 *.env
 *.key
 *.crt
-secrets/
 hshicopvault/
 OpenSSL-Win64/
 ansible/
