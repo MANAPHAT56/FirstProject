@@ -1,18 +1,19 @@
-# argocd-ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: argocd-ingress
   namespace: argocd
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT_ID:certificate/xxxxxxxx
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:739275443965:certificate/b15a4c51-4f2c-48e8-b709-364124bb61b3
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS # 👈 สำคัญมาก!
 spec:
+  ingressClassName: alb
   rules:
-    - host: argocd.example.com
+    - host: argocd.toteja.co
       http:
         paths:
           - path: /
@@ -21,4 +22,4 @@ spec:
               service:
                 name: argocd-server
                 port:
-                  number: 443
+                  number: 443  # 👈 ต้องเปลี่ยนเป็น 443

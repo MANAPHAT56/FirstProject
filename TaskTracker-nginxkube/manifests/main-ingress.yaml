@@ -49,17 +49,17 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT_ID:certificate/yyyyyyyy
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:739275443965:certificate/b15a4c51-4f2c-48e8-b709-364124bb61b3
     alb.ingress.kubernetes.io/target-type: ip
 spec:
   rules:
-    - host: myweb.example.com
+    - host: toteja.co
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: your-web-service
+                name: node-server-service
                 port:
-                  number: 80
+                  number: 5000
