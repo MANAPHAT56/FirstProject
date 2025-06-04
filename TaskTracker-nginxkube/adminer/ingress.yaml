@@ -56,16 +56,6 @@ metadata:
 
 spec:
   rules:
-    - host: toteja.co
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: node-server-service
-                port:
-                  number: 5000
     - host: adminer.toteja.co
       http:
         paths:
