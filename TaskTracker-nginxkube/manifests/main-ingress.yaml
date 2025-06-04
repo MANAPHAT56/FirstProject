@@ -66,10 +66,10 @@ spec:
                 name: node-server-service
                 port:
                   number: 5000
-          - path: /adminer
+          - path: /adminer/*
             pathType: Prefix
             backend:
               service:
                 name: adminer-service
                 port:
-                  number: 8080
+                  number: 80
