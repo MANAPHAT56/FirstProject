@@ -11,3 +11,5 @@ reverseproxy/0
 *.pem
 grafana_dataja/
 *.env
+TaskTracker-nginxkube-Dev/
+TaskTracker/OpenSSL-Win64/
