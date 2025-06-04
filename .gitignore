@@ -2,10 +2,12 @@
 dist/
 conf.d/
 node_modules/
-*.env
 *.key
 *.crt
 hshicopvault/
 OpenSSL-Win64/
 ansible/
 reverseproxy/0
+*.pem
+grafana_dataja/
+*.env
