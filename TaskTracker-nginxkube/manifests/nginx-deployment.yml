@@ -1,0 +1,45 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx
+#         ports:
+#         - containerPort: 80
+      #   volumeMounts:
+      #   - name: nginx-config-volume
+      #     mountPath: /etc/nginx/nginx.conf
+      #     subPath: nginx.conf
+      #   - name: ssl-certs
+      #     mountPath: /etc/nginx/ssl  
+      # volumes:
+      # - name: nginx-config-volume
+      #   configMap:
+      #     name: nginx-config
+      # - name: ssl-certs
+      #   secret:
+      #     secretName: local-dev-ssl
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nginx-service
+# spec:
+#   selector:
+#     app: nginx
+#   ports:
+#   - protocol: TCP
+#     port: 80
+#     targetPort: 80
+#   type: ClusterIP
