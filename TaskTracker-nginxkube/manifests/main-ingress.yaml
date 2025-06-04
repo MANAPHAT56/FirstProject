@@ -48,9 +48,12 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:739275443965:certificate/b15a4c51-4f2c-48e8-b709-364124bb61b3
     alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+
 spec:
   rules:
     - host: toteja.co
@@ -63,3 +66,10 @@ spec:
                 name: node-server-service
                 port:
                   number: 5000
+          - path: /adminer
+            pathType: Prefix
+            backend:
+              service:
+                name: adminer-service
+                port:
+                  number: 8080
