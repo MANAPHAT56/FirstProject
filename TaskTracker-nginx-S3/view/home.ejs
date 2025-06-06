@@ -4,16 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Tote+</title>
-    <link rel="stylesheet" href="/assets/css/home.css">
-    <script src="/assets/js/index.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.toteja.co/public/css/home.css">
+     <link rel="stylesheet" href="/assets/css/playads.css">
+   <script src="https://cdn.toteja.co/public/js/index.js" defer></script>
+       <script src="/assets/js/playads.js" defer></script>
 </head>
 <body>
     <%- include('navbar') %>
-    <br>
-    <button class="button">WATCH ADs to get more points</button>
+    <br>  
+  <button class="button" id="showAd">WATCH ADs to get more points</button>
+
+<!-- Ad Overlay -->
+<div class="ad-overlay" id="adOverlay" style="display: none;">
+  <div class="ad-video-container">
+    <button class="close-ad" id="closeAd">X</button>
+    <video id="adVideo" width="640" controls>
+      <source src="https://cdn.toteja.co/public/videos/ad1.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
     <div class="container">
         <header class="fade-in">
-            <img src="/assets/images/Tote+4.png" class="locoja"alt="Eco-friendly Tote Bag">
+            <img src="https://cdn.toteja.co/public/images/Tote%2B4.png" class="locoja"alt="Eco-friendly Tote Bag">
             <h1>Welcome to Tote+</h1>
             <p>Join us in reducing plastic waste with reusable bags!</p>
         </header>
@@ -21,8 +34,8 @@
         <main>
             <section class="intro">
                 <div class="image-container">
-                    <img src="/assets/images/Tote+3.png" alt="Eco-friendly Tote Bag">
-                    <img src="/assets/images/Tote+.png" alt="Eco-friendly Tote Bag">
+                    <img src="https://cdn.toteja.co/public/images/Tote%2B3.png" alt="Eco-friendly Tote Bag">
+                    <img src="https://cdn.toteja.co/public/images/Tote%2B.png" alt="Eco-friendly Tote Bag">
                 </div>
                 <div class="content">
                     <p class="fade-in">

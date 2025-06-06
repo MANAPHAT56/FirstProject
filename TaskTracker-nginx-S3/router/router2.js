@@ -184,5 +184,24 @@ router.post('/deletecoupon/:id', authenticateJWT, async (req, res) => {
     return res.redirect('/tasks');
   });
 });
+router.post('/reward', authenticateJWT, async (req, res) => {
+  try {
+    const point = req.body.point;
+    const userName = req.user.username;
+    const userResults = await query(`SELECT point FROM user WHERE name = ?`, [userName]);
+    const currentPoint = userResults[0]?.point || 0;
+    const newPoint = currentPoint + point; // เพิ่ม 10 คะแนน
 
+    // อัปเดตคะแนนในฐานข้อมูล
+    await query(`UPDATE user SET point = ? WHERE name = ?`, [newPoint, userName]);
+
+    // ล้างแคช
+    client.del('point');
+
+    return res.status(200).json({ message: "Reward successful", newPoint });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Internal server error');
+  }
+});
 module.exports = router;

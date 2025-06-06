@@ -69,7 +69,10 @@ app.use((req, res, next) => {
   });
   next();
 });
-
+// ถ้าจะใช้ HTTPS ให้ uncomment ข้างล่าง
+// https.createServer(options, app).listen(5000, () => {
+//   console.log('Server is running on HTTPS port 5000');
+// });
 // --- Routes ---
 app.use('/', router1);
 app.use('/', router2);
