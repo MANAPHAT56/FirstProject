@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tote+ | รายละเอียดคูปอง</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding-top: 60px;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .coupon-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            font-size: 1.4em; /* ขนาดตัวอักษรเท่ากัน */
+            text-align: left;
+        }
+        
+        .coupon-image {
+            width: 160px;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .redeem-button {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 20px; /* ขนาดตัวอักษรเท่ากับใน .coupon-container */
+            margin-top: 20px;
+            margin-left: 210px;
+        }
+        
+        .redeem-button:hover {
+            background-color: #e68900;
+        }
+        
+        .coupon-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 1.4em; /* ขนาดตัวอักษรเท่ากับใน .coupon-container */
+        }
+        
+        .coupon-item div {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .coupon-item img {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .coupon-item div strong {
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+        
+        .coupon-item .description, .coupon-item .store {
+            padding-left: 0;
+            margin-left: 0;
+            color: #555;
+            text-align: left;
+        }
+        
+        .coupon-item .description {
+            margin-top: 20px;
+        }
+        
+        .coupon-item .store {
+            margin-top: 20px;
+        }
+        
+    </style>
+    <script>
+        function redeemCoupon(couponId,couponImg,couponName) {
+            fetch('/redeem-coupon', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ couponId: couponId,couponImg:couponImg,couponName:couponName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    alert('แลกคูปองสำเร็จ!');
+                } else {
+                    alert('เกิดข้อผิดพลาด: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <%- include("navbar") %> 
+    <div class="coupon-container">
+        <h2>รายละเอียดคูปอง</h2>
+        <% coupondt.forEach(coupon => { %>
+            <div class="coupon-item">
+                <div><strong>ชื่อคูปอง:</strong> <%= coupon.name %></div>
+                <div><img src="<%= coupon.img %>" alt="คูปอง <%= coupon.name %>" class="coupon-image"></div>
+                <div class="description"><strong>คำอธิบาย:</strong> <%= coupon.description %></div>
+                <div class="store"><strong>Store: </strong><%= storeName %></div>
+                <div><strong>เเต้มที่ใช้:</strong><%= coupon.P_required%></div>
+                <div><button class="redeem-button" onclick="redeemCoupon('<%= coupon.id %>','<%= coupon.img %>','<%= coupon.name %>')">แลกคูปอง</button></div>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>

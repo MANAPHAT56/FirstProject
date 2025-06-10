@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events & Rewards</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        h1 {
+            font-size: 28px;
+            background: linear-gradient(45deg, #453402, #8a6a18);
+            padding: 15px 180px;
+            border-radius: 15px;
+            display: inline-block;
+            color: rgb(255, 253, 253);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            font-size: 24px;
+            background: #ff8800;
+            color: rgb(255, 255, 255);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+        }
+        p {
+            font-size: 15px;
+            font-weight: bold;
+            background: #ffcc00;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0px 2px 5px rgba(249, 244, 244, 0.1);
+        }
+        .event-list, .reward-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 items per row */
+            grid-gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .reward-list {
+            grid-template-rows: repeat(2, 1fr); /* Limit to 2 rows */
+        }
+        .event-card, .reward-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .event-card img, .reward-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* แถบ "ดูเพิ่มเติม" */
+        .load-more {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff8800;
+            cursor: pointer;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .load-more:hover {
+            color: #ff6600;
+        }
+        .load-more-arrow {
+            font-size: 24px;
+            animation: bounce 1s infinite alternate;
+        }
+        .reward-container {
+            padding: 20px;
+            border:  7px solid rgb(64, 0, 99);
+            border-radius: 15px;
+            background-color: #f3da7e;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+            margin-top: 20px;
+        }
+        .container {
+          background-color: #ffffff; /* สีเทาอ่อน */
+      }      
+      .kuy{
+        font-size: 24px;
+        font-weight: bold;
+        background: #ffcc00;
+        padding: 10px;
+        border-radius: 10px;
+        display: inline-block;
+        box-shadow: 0px 2px 5px rgba(249, 244, 244, 0.1);
+      }
+      @keyframes bounce {
+        from { transform: translateY(0); }
+        to { transform: translateY(10px); }
+    }
+    .seemore{
+      font-size: 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 15px 115px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    </style>
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container">
+        <h1>🎉 กิจกรรมพิเศษ & แลกของรางวัล 🎁</h1>
+        
+        <!-- Section: Events -->
+        <div class="event-list"></div>
+        <!-- Section: Rewards -->
+        <h2>เช็คสถานะเเละรายละเอียดกิจกรรมที่เข้า</h2>
+        <p class="kuy">   💰 แต้มสะสมของคุณ: <strong><%= userPoints %></strong></p>
+        <div class="reward-container">
+            <div class="reward-list">
+                <% rewards.forEach(reward => { %>
+                    <div class="reward-card">
+                        <img src="<%= reward.image %>" alt="Reward Image">
+                        <h3><%= reward.name %></h3>
+                        <p>🔹 ใช้ <%= reward.P_required %> แต้ม</p>
+                        <button <%= userPoints < reward.points ? 'disabled' : '' %>><strong>   แลกเลย</strong></button>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+        <button class="seemore">ดูเพิ่มเติม</button>
+        <!-- แถบดูเพิ่มเติม -->
+        <br>
+        <br>
+    </div>
+    <!-- Section: Events -->
+<h1>🎉 กิจกรรมพิเศษ</h1>
+<div class="event-list">
+    <% events.forEach(event => { %>
+        <div class="event-card">
+            <img src="<%= event.image %>" alt="Event Image">
+            <h3><%= event.name %></h3>
+            <p><%= event.description %></p>
+            <p><strong>ระยะเวลา:</strong> <%= event.date %></p>
+            <button>เข้าร่วมกิจกรรม</button>
+        </div>
+    <% }); %>
+</div>
+
+
+    <script>
+        window.addEventListener('scroll', function() {
+            let loadMore = document.getElementById("loadMore");
+            if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 100) {
+                loadMore.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
