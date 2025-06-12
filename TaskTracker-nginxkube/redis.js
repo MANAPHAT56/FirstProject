@@ -14,3 +14,7 @@ const client = redis.createClient({
 client.on('ready', () => console.log('Redis is ready'));
 client.on('reconnecting', () => console.log('Redis reconnecting'));
 client.on('end', () => console.log('Redis connection closed'));
+client.on('error', (err) => {
+  console.error('Redis error:', err);
+});
+module.exports = client;

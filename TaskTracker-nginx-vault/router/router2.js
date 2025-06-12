@@ -2,65 +2,85 @@ const path = require("path");
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const util = require('util'); // Still needed for promisify
-// const axios = require('axios'); // Not used in this file, can be removed if not needed elsewhere
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
-// **Router ถูก export เป็นฟังก์ชันที่รับ 'pool' และ 'client' ที่ถูก initialize แล้ว**
-module.exports = (pool, client) => { // <-- **สำคัญมาก! รับ pool และ client ที่นี่**
-    const router = express.Router(); // สร้าง router instance ภายในฟังก์ชันนี้
+// **เปลี่ยนการ export ให้เป็นฟังก์ชันที่รับ databaseService แทน pool และ client**
+module.exports = (pool, client) => {
+    const router = express.Router();
 
+    // ดึง pool จาก databaseService
     // secretKey ควรจะถูกโหลดจาก .env
-    // หากคุณมี SECRET_KEY ใน .env ให้ใช้ process.env.SECRET_KEY
-    const secretKey = process.env.JWT_SECRET || "your-fallback-secret-key"; 
-
-    // Promisify pool.query directly now that 'pool' is available
-    // Note: If you're using 'mysql2/promise', pool.query is already promise-based.
-    // So, `await pool.query(...)` can be used directly.
-    // If you prefer the `query(...)` alias, this line is fine:
-    const query = util.promisify(pool.query).bind(pool);
+    const secretKey = process.env.JWT_SECRET || "your-fallback-secret-key";
 
     // --- JWT Authentication Middleware ---
     const authenticateJWT = (req, res, next) => {
         const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
         const refreshToken = req.cookies.refreshToken;
 
-        if (!token && !refreshToken) {
-            return res.redirect('/login');
-        }
-
-        const verifyAndHandleToken = (current_token, isRefreshToken = false) => {
-            jwt.verify(current_token, secretKey, (err, user) => {
-                if (err) {
-                    if (!isRefreshToken && refreshToken) {
-                        return verifyAndHandleToken(refreshToken, true);
+        if (!token) {
+            if (refreshToken) {
+                return jwt.verify(refreshToken, secretKey, (err, user) => {
+                    if (err) {
+                        console.error('Invalid refresh token:', err);
+                        return res.redirect('/login');
                     }
-                    return res.redirect('/login');
-                }
-
-                if (isRefreshToken) {
                     const { username, id } = user;
                     const newToken = jwt.sign({ username, id }, secretKey, { expiresIn: '1m' });
-                    res.cookie('token', newToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax', maxAge: 300000 });
+                    res.cookie('token', newToken, { 
+                        httpOnly: true, 
+                        secure: process.env.NODE_ENV === 'production', 
+                        sameSite: 'Lax', 
+                        maxAge: 300000 
+                    });
+                    req.user = user;
+                    return next();
+                });
+            } else {
+                return res.redirect('/login');
+            }
+        }
+
+        jwt.verify(token, secretKey, (err, user) => {
+            if (err) {
+                console.error('Invalid access token:', err);
+                if (refreshToken) {
+                    return jwt.verify(refreshToken, secretKey, (err, user) => {
+                        if (err) {
+                            console.error('Invalid refresh token:', err);
+                            return res.redirect('/login');
+                        }
+                        const { username, id } = user;
+                        const newToken = jwt.sign({ username, id }, secretKey, { expiresIn: '1m' });
+                        res.cookie('token', newToken, { 
+                            httpOnly: true, 
+                            secure: process.env.NODE_ENV === 'production', 
+                            sameSite: 'Lax', 
+                            maxAge: 300000 
+                        });
+                        req.user = user;
+                        return next();
+                    });
+                } else {
+                    return res.redirect('/login');
                 }
-                req.user = user;
-                next();
-            });
-        };
-        verifyAndHandleToken(token);
+            }
+            req.user = user;
+            next();
+        });
     };
 
     // --- Route Definitions ---
 
     router.get("/coupons", authenticateJWT, async (req, res, next) => {
         try {
-            // client is now available directly from the function parameter
             const coupons = await client.get("coupons"); 
 
             if (coupons) {
+                console.log("Serving coupons from Redis cache.");
                 return res.render('../view/Coupons.ejs', { stores: JSON.parse(coupons) });
             } else {
-                // Use pool.query directly, or the 'query' alias if you prefer
-                const [results] = await pool.query(`SELECT * FROM stores`); 
+                console.log("Fetching coupons from database and caching to Redis.");
+                const results= await pool.query(`SELECT * FROM stores`); 
                 await client.setEx('coupons', 3600, JSON.stringify(results)); 
                 return res.render('../view/Coupons.ejs', { stores: results });
             }
@@ -73,8 +93,8 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
     router.get('/store/:id', async (req, res, next) => {
         const storeId = req.params.id;
         try {
-            const [results] = await pool.query('SELECT * FROM coupons WHERE storesid = ?', [storeId]);
-            res.render('store', { coupons: results });
+            const results = await pool.query('SELECT * FROM coupons WHERE storesid = ?', [storeId]);
+            res.render('../view/store', { coupons: results });
         } catch (error) {
             console.error('Error in /store/:id:', error);
             next(error);
@@ -84,13 +104,13 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
     router.post('/coupon/:id', authenticateJWT, async (req, res, next) => {
         const couponId = req.params.id;
         try {
-            const [couponResults] = await pool.query('SELECT * FROM coupons WHERE id = ?', [couponId]);
+            const couponResults = await pool.query('SELECT * FROM coupons WHERE id = ?', [couponId]);
             if (couponResults.length === 0) {
                 return res.status(404).send('Coupon not found');
             }
 
             const storeId = couponResults[0].storesid;
-            const [storeResults] = await pool.query('SELECT name FROM stores WHERE id = ?', [storeId]);
+            const storeResults = await pool.query('SELECT name FROM stores WHERE id = ?', [storeId]);
             if (storeResults.length === 0) {
                 return res.status(404).send('Store not found for this coupon');
             }
@@ -108,13 +128,13 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
     router.post('/couponafter/:id', authenticateJWT, async (req, res, next) => {
         const couponId = req.params.id;
         try {
-            const [couponResults] = await pool.query('SELECT * FROM coupons WHERE id = ?', [couponId]);
+            const couponResults = await pool.query('SELECT * FROM coupons WHERE id = ?', [couponId]);
             if (couponResults.length === 0) {
                 return res.status(404).send('Coupon not found');
             }
 
             const storeId = couponResults[0].storesid;
-            const [storeResults] = await pool.query('SELECT name FROM stores WHERE id = ?', [storeId]);
+            const storeResults= await pool.query('SELECT name FROM stores WHERE id = ?', [storeId]);
             if (storeResults.length === 0) {
                 return res.status(404).send('Store not found for this coupon');
             }
@@ -135,13 +155,13 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
             const username = req.user.username;
             const userId = req.user.id;
 
-            const [couponResults] = await pool.query(`SELECT P_required FROM coupons WHERE id = ?`, [couponId]);
+            const couponResults = await pool.query(`SELECT P_required FROM coupons WHERE id = ?`, [couponId]);
             const pointRequired = couponResults[0]?.P_required;
             if (pointRequired === undefined) {
                 return res.status(404).json({ error: "Coupon not found or point requirement not defined." });
             }
 
-            const [userResults] = await pool.query(`SELECT point FROM user WHERE id = ?`, [userId]);
+            const userResults = await pool.query(`SELECT point FROM user WHERE id = ?`, [userId]);
             const userPoint = userResults[0]?.point;
             if (userPoint === undefined) {
                 return res.status(404).json({ error: "User not found." });
@@ -157,8 +177,9 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
                 [couponName, couponId, couponImg]
             );
 
-            await client.del('point');
-            await client.del('users');
+            // ล้าง Redis cache ที่เกี่ยวข้อง
+            await client.del('point', 'users', 'nonactive');
+            console.log('User-related Redis keys cleared after coupon redemption.');
 
             return res.status(200).json({ message: "Exchange Coupon SUCCESSFUL" });
 
@@ -173,7 +194,7 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
         const userName = req.user.username;
 
         try {
-            const [results] = await pool.query(`SELECT ExpiredAt FROM \`${userName}\` WHERE id = ?`, [id]);
+            const results = await pool.query(`SELECT ExpiredAt FROM \`${userName}\` WHERE id = ?`, [id]);
 
             let expireAt;
             if (results.length === 0) {
@@ -183,15 +204,17 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
             if (results[0].ExpiredAt) {
                 expireAt = results[0].ExpiredAt;
             } else {
-                expireAt = new Date(Date.now() + 3 * 60 * 1000);
+                expireAt = new Date(Date.now() + 3 * 60 * 1000); // หมดอายุใน 3 นาที
             }
 
             const updateQuery = `UPDATE \`${userName}\` SET ExpiredAt = ?, Active = 'yes' WHERE id = ?`;
             await pool.query(updateQuery, [expireAt, id]);
 
-            await client.del('users');
+            // ล้าง Redis cache
+            await client.del('users', 'nonactive');
+            console.log('User tasks cache cleared after coupon usage.');
 
-            res.render('qrcoupon', { couponId: id, expireAt });
+            res.render('../view/qrcoupon', { couponId: id, expireAt });
         } catch (err) {
             console.error('Error in /usecoupon/:id:', err);
             next(err);
@@ -204,13 +227,15 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
 
         try {
             const deleteQuery = `DELETE FROM \`${userName}\` WHERE id = ?`;
-            const [results] = await pool.query(deleteQuery, [couponId]);
+            const results = await pool.query(deleteQuery, [couponId]);
 
             if (results.affectedRows === 0) {
                 return res.status(404).json({ error: 'Coupon not found in your collection.' });
             }
 
-            await client.del('users');
+            // ล้าง Redis cache
+            await client.del('users', 'nonactive');
+            console.log('User tasks cache cleared after coupon deletion.');
 
             return res.redirect('/tasks');
         } catch (err) {
@@ -219,5 +244,5 @@ module.exports = (pool, client) => { // <-- **สำคัญมาก! รั�
         }
     });
 
-    return router; // **ต้อง return router กลับไป**
+    return router;
 };
