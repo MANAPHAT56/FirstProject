@@ -16,7 +16,7 @@ const promClient = require('prom-client');
 dotenv.config();
 
 const app = express();
-
+app.disable('x-powered-by');
 // --- Middleware ---
 // app.use(session({
 //   secret: "kuy",
@@ -32,6 +32,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, "view"));
 
 app.use(cors({
+  origin: 'https://toteja1.co',
   methods: ['GET', 'POST'],
   credentials: true,
 }));
