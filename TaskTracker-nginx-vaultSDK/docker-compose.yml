@@ -124,8 +124,9 @@ services:
     volumes:
       - ./vaults/vault.hcl:/vault/config/vault.hcl
       - vault-data:/vault/data
-      - ./config/vault-policies:/vault/policies
+      - ./config/vault-policies/db-policy.hcl:/vault/policies/db-policy.hcl
       - ./vault-script:/vault/scripts
+      - ./vaults/policydata.hcl:/vault/policies/policydata.hcl
     environment:
       VAULT_LOCAL_CONFIG: /vault/config/vault.hcl
       VAULT_ADDR: http://0.0.0.0:8200
@@ -144,7 +145,12 @@ services:
       - vault
     volumes:
       - ./vaults/agent.hcl:/etc/vault/agent.hcl
-      - ./vaults/file_secrets:/secrets
+      - ./secretsja:/vault/tmp
+      - ./vault-script/ROLEID:/etc/vault/role_id
+      - ./vault-script/SECRETID:/etc/vault/secret_id
+      - ./vault-script/KVTOKEN:/vault/config/token:rw
+    cap_add:
+      - IPC_LOCK
     command: vault agent -config=/etc/vault/agent.hcl
     networks:
       - monitor-net

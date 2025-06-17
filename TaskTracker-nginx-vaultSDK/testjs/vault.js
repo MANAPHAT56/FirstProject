@@ -1,7 +1,7 @@
 const vault = require('node-vault');
 const logger = require('./logger');
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../vault-script/token.env') });
+require('dotenv').config({ path: path.resolve(__dirname, '../vault-script/vault.env') });
 
 const vaultClient = vault({
   apiVersion: 'v1',

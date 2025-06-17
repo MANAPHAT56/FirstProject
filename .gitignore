@@ -13,5 +13,6 @@ grafana_dataja/
 *.env
 TaskTracker-nginxkube-Dev/
 TaskTracker/OpenSSL-Win64/
-TaskTracker-nginx-vault/vaults/
-TaskTracker-nginx-vault/vault-script/
+TaskTracker-nginx-vaultSDK/vaults/
+TaskTracker-nginx-vaultSDK/vault-script/
+*token
