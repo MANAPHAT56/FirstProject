@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding-top: 80px; /* ขยับเนื้อหาเว็บลงมา ไม่ให้ชิดกับ navbar */
+    padding-top: 80px; /* เว้นพื้นที่สำหรับ navbar */
 }
 
 .navbar {
@@ -9,7 +9,7 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: #333;
-    padding: 20px 40px; /* ขยาย navbar */
+    padding: 20px 40px;
     position: fixed;
     top: 0;
     left: 0;
@@ -68,7 +68,7 @@ body {
     margin: 5px 0;
 }
 
-/* Responsive */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
     .navbar-links {
         flex-direction: column;

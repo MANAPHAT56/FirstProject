@@ -6,56 +6,88 @@
     <title>Tote+ | คูปองร้านค้า</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            padding-top: 60px;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
+    font-family: Arial, sans-serif;
+    padding-top: 60px;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+}
 
-        .coupon-container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+.coupon-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* เผื่อมีการล้นของตารางบนจอเล็ก */
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    min-width: 600px; /* ให้คงขนาดตารางขั้นต่ำไว้ */
+}
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+}
 
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
+th {
+    background-color: #4CAF50;
+    color: white;
+}
 
-        .coupon-image {
-            width: 80px;
-            height: auto;
-            border-radius: 5px;
-        }
+.coupon-image {
+    width: 80px;
+    height: auto;
+    border-radius: 5px;
+}
 
-        .use-coupon {
-            background-color: #ff9800;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+.use-coupon {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
 
-        .use-coupon:hover {
-            background-color: #e68900;
-        }
+.use-coupon:hover {
+    background-color: #e68900;
+}
+
+/* ✅ Responsive สำหรับหน้าจอขนาดเล็ก เช่น มือถือ */
+@media (max-width: 768px) {
+    th, td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .coupon-image {
+        width: 60px;
+    }
+
+    .use-coupon {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .coupon-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    table {
+        min-width: unset; /* ยกเลิกความกว้างขั้นต่ำให้ scroll ได้ */
+    }
+}
+
     </style>
 </head>
 <body>

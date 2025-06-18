@@ -171,12 +171,15 @@
     "utils-merge": "^1.0.1",
     "vary": "^1.1.2"
   },
+
   "scripts": {
-    "test": "jest",
-    "start": "node app.js",
-    "scan": "docker-compose -f ../../Sonarqube/docker-compose-sona.yml up -d",
-    "coverage": "jest --coverage"
-  },
+     "start": "node app.js",
+  "scan": "docker-compose -f ../../Sonarqube/docker-compose-sona.yml up -d",
+  "test:unit": "jest tests/unit --coverage",
+  "test:integration": "jest tests/integration",
+  "test": "npm run test:unit && npm run test:integration"
+},
+
   "keywords": [],
   "author": "manaphat",
   "license": "MIT",

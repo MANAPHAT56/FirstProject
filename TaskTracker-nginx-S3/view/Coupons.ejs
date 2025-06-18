@@ -6,90 +6,178 @@
     <title>Tote+ | ร้านค้าพาร์ทเนอร์</title>
     <style>
         /* ตั้งค่าพื้นฐาน */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f7fdf9;
-            color: #333;
-            padding-top: 60px; /* ปรับให้พอดีกับ navbar */
-            margin: 0;
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7fdf9;
+    color: #333;
+    padding-top: 3.75rem; /* 60px -> 3.75rem (สมมติ 1rem = 16px) ปรับให้พอดีกับ navbar */
+    margin: 0;
+    line-height: 1.6; /* เพิ่ม line-height เพื่อให้อ่านง่ายขึ้น */
+    box-sizing: border-box; /* สำคัญเพื่อให้ padding ไม่ทำให้ขนาดเกิน */
+}
 
-        /* คอนเทนเนอร์ของร้านค้า */
-        .store-container {
-            display: flex;
-            gap: 20px;
-            margin: 20px;
-            overflow-x: auto;
-            padding: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: #4CAF50 #f0f0f0;
-        }
+/* คอนเทนเนอร์ของร้านค้า */
+.store-container {
+    display: flex;
+    flex-wrap: wrap; /* ทำให้การ์ดขึ้นบรรทัดใหม่ได้เมื่อหน้าจอเล็ก */
+    gap: 1.25rem; /* 20px -> 1.25rem */
+    margin: 1.25rem; /* 20px -> 1.25rem */
+    padding: 0.625rem; /* 10px -> 0.625rem */
+    /* overflow-x: auto; */ /* ย้ายไปใช้ flex-wrap แทน horizontal scroll สำหรับ mobile */
+    /* scrollbar-width: thin; */ /* อาจจะไม่จำเป็นเมื่อใช้ flex-wrap */
+    /* scrollbar-color: #4CAF50 #f0f0f0; */ /* อาจจะไม่จำเป็นเมื่อใช้ flex-wrap */
+    justify-content: center; /* จัดการ์ดให้อยู่ตรงกลางเมื่อมีจำนวนไม่เต็มแถว */
+}
 
-        /* ปรับ Scroll Bar (สำหรับ Chrome และ Edge) */
-        .store-container::-webkit-scrollbar {
-            height: 8px;
-        }
+/* ปรับ Scroll Bar (สำหรับ Chrome และ Edge) - อาจจะไม่ได้ใช้ถ้าใช้ flex-wrap */
+/*
+.store-container::-webkit-scrollbar {
+    height: 0.5rem;
+}
 
-        .store-container::-webkit-scrollbar-track {
-            background: #f0f0f0;
-            border-radius: 10px;
-        }
+.store-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 0.625rem;
+}
 
-        .store-container::-webkit-scrollbar-thumb {
-            background: #4CAF50;
-            border-radius: 10px;
-        }
+.store-container::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 0.625rem;
+}
+*/
 
-        /* การ์ดร้านค้า */
-        .store-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            width: 280px; /* กำหนดความกว้างคงที่ */
-            height: 280px; /* กำหนดความสูงคงที่ */
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-decoration: none;
-            color: inherit;
-            flex-shrink: 0; /* ป้องกันไม่ให้กล่องบีบตัว */
-        }
+/* การ์ดร้านค้า */
+.store-card {
+    background: white;
+    border-radius: 0.75rem; /* 12px -> 0.75rem */
+    padding: 0.9375rem; /* 15px -> 0.9375rem */
+    width: 100%; /* ตั้งต้นให้เต็มความกว้าง */
+    max-width: 18rem; /* ประมาณ 288px (280px + padding) กำหนด max-width */
+    min-width: 15rem; /* กำหนด min-width เพื่อไม่ให้เล็กเกินไปบนจอเล็ก */
+    height: auto; /* กำหนดความสูงเป็น auto เพื่อให้ยืดหยุ่นตามเนื้อหา */
+    aspect-ratio: 1 / 1; /* รักษาสัดส่วน 1:1 เพื่อให้เป็นสี่เหลี่ยมจัตุรัสโดยประมาณ */
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1); /* 0 4px 10px -> rem */
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0; /* ป้องกันไม่ให้กล่องบีบตัวเกินไป */
+    box-sizing: border-box; /* สำคัญ */
+}
 
-        .store-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
+.store-card:hover {
+    transform: translateY(-0.3125rem); /* -5px -> -0.3125rem */
+    box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.15); /* 0 6px 15px -> rem */
+}
 
-        /* รูปร้านค้า */
-        .store-card img {
-            width: 90%; /* กำหนดความกว้างของภาพให้เล็กกว่ากล่อง */
-            height: 150px; /* กำหนดความสูงของภาพ */
-            border-radius: 8px;
-            object-fit: cover;
-            transition: 0.3s;
-            margin: 0 auto; /* จัดให้ภาพอยู่ตรงกลาง */
-        }
+/* รูปร้านค้า */
+.store-card img {
+    width: 90%;
+    height: 9.375rem; /* 150px -> 9.375rem (ความสูงคงที่) */
+    max-height: 50%; /* กำหนด max-height เป็นเปอร์เซ็นต์ของ card เพื่อความยืดหยุ่น */
+    border-radius: 0.5rem; /* 8px -> 0.5rem */
+    object-fit: cover;
+    transition: 0.3s;
+    margin: 0 auto;
+}
 
-        .store-card:hover img {
-            transform: scale(1.05);
-        }
+.store-card:hover img {
+    transform: scale(1.05);
+}
 
-        /* ข้อความภายในการ์ด */
-        .store-card h3 {
-            font-size: 1.3em;
-            color: #2e7d32;
-            margin: 10px 0;
-        }
+/* ข้อความภายในการ์ด */
+.store-card h3 {
+    font-size: 1.25rem; /* 1.3em -> 1.25rem (เทียบเท่า 20px) */
+    color: #2e7d32;
+    margin: 0.625rem 0; /* 10px -> 0.625rem */
+    line-height: 1.2; /* ปรับ line-height เพื่อข้อความหลายบรรทัด */
+    overflow: hidden; /* ป้องกันข้อความล้น */
+    text-overflow: ellipsis; /* แสดง ... เมื่อข้อความยาวเกิน */
+    white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
+}
 
-        .store-card p {
-            font-size: 1em;
-            color: #666;
-            margin: 5px 0;
-        }
+.store-card p {
+    font-size: 0.9375rem; /* 1em -> 0.9375rem (เทียบเท่า 15px) */
+    color: #666;
+    margin: 0.3125rem 0; /* 5px -> 0.3125rem */
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* จำกัดจำนวนบรรทัด */
+    -webkit-box-orient: vertical;
+}
+
+/* --- Media Queries --- */
+
+/* สำหรับหน้าจอขนาดเล็ก (แท็บเล็ตและมือถือแนวตั้ง) */
+@media (max-width: 768px) {
+    body {
+        padding-top: 3.5rem; /* ปรับ padding-top หาก navbar มีขนาดเล็กลง */
+    }
+
+    .store-container {
+        margin: 1rem; /* ลด margin ของ container */
+        gap: 1rem; /* ลด gap ระหว่างการ์ด */
+        padding: 0.5rem; /* ลด padding */
+    }
+
+    .store-card {
+        padding: 0.75rem; /* ลด padding ในการ์ด */
+        max-width: 48%; /* ให้การ์ดมี 2 ใบต่อแถว (มี gap ระหว่างกัน) */
+        min-width: unset; /* ลบ min-width เดิมออก */
+        /* height: 250px; */ /* ถ้ายังต้องการความสูงคงที่ อาจจะปรับลด */
+        aspect-ratio: 1 / 1.1; /* ปรับสัดส่วนการ์ดเล็กน้อยถ้าเนื้อหามีมากขึ้น */
+    }
+
+    .store-card img {
+        height: 7.5rem; /* ลดความสูงของรูปภาพ */
+    }
+
+    .store-card h3 {
+        font-size: 1.1rem; /* ลดขนาดหัวข้อ */
+        margin: 0.5rem 0;
+    }
+
+    .store-card p {
+        font-size: 0.85rem; /* ลดขนาดรายละเอียด */
+        margin: 0.25rem 0;
+    }
+}
+
+/* สำหรับหน้าจอที่เล็กมากๆ (มือถือแนวตั้ง) */
+@media (max-width: 480px) {
+    .store-container {
+        margin: 0.5rem; /* ลด margin ของ container อีก */
+        gap: 0.8rem; /* ลด gap อีก */
+        padding: 0.3rem;
+    }
+
+    .store-card {
+        padding: 0.6rem; /* ลด padding ในการ์ด */
+        max-width: 100%; /* ให้การ์ดมี 1 ใบต่อแถว */
+        height: auto; /* ให้ความสูงปรับตามเนื้อหาอย่างเต็มที่ */
+        aspect-ratio: unset; /* ลบ aspect-ratio ออกหากต้องการความยืดหยุ่นเต็มที่ */
+    }
+
+    .store-card img {
+        height: 8rem; /* อาจจะเพิ่มความสูงของรูปเล็กน้อยเพื่อให้ดูชัดขึ้น */
+    }
+
+    .store-card h3 {
+        font-size: 1rem;
+        white-space: normal; /* อนุญาตให้หัวข้อขึ้นบรรทัดใหม่ */
+    }
+
+    .store-card p {
+        font-size: 0.8rem;
+        -webkit-line-clamp: 3; /* อาจจะอนุญาตให้แสดงรายละเอียด 3 บรรทัด */
+    }
+}
     </style>
 </head>
 <body>

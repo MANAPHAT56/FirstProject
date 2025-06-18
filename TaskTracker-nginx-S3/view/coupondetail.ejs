@@ -5,89 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tote+ | รายละเอียดคูปอง</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding-top: 60px;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .coupon-container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            font-size: 1.4em; /* ขนาดตัวอักษรเท่ากัน */
-            text-align: left;
-        }
-        
-        .coupon-image {
-            width: 160px;
-            height: auto;
-            border-radius: 5px;
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .redeem-button {
-            background-color: #ff9800;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 20px; /* ขนาดตัวอักษรเท่ากับใน .coupon-container */
-            margin-top: 20px;
-            margin-left: 210px;
-        }
-        
-        .redeem-button:hover {
-            background-color: #e68900;
-        }
-        
-        .coupon-item {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #fff;
-            font-size: 1.4em; /* ขนาดตัวอักษรเท่ากับใน .coupon-container */
-        }
-        
-        .coupon-item div {
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        
-        .coupon-item img {
-            display: block;
-            margin: 0 auto;
-        }
-        
-        .coupon-item div strong {
-            font-weight: bold;
-            color: #333;
-            margin-right: 10px;
-        }
-        
-        .coupon-item .description, .coupon-item .store {
-            padding-left: 0;
-            margin-left: 0;
-            color: #555;
-            text-align: left;
-        }
-        
-        .coupon-item .description {
-            margin-top: 20px;
-        }
-        
-        .coupon-item .store {
-            margin-top: 20px;
-        }
-        
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    padding-top: 60px;
+}
+
+.coupon-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size: 1.2em;
+    text-align: left;
+}
+
+.coupon-image {
+    width: 160px;
+    height: auto;
+    border-radius: 5px;
+    margin: 30px auto;
+    display: block;
+}
+
+.redeem-button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.redeem-button:hover {
+    background-color: #e68900;
+}
+
+.coupon-item {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 1.2em;
+}
+
+.coupon-item div {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.coupon-item img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.coupon-item div strong {
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px;
+}
+
+.coupon-item .description,
+.coupon-item .store {
+    padding-left: 0;
+    margin-left: 0;
+    color: #555;
+    text-align: left;
+    margin-top: 20px;
+}
+
+/* ✅ Responsive media query */
+@media (max-width: 768px) {
+    .coupon-container {
+        padding: 20px;
+        font-size: 1em;
+    }
+
+    .redeem-button {
+        font-size: 1em;
+        padding: 10px 15px;
+        margin-top: 15px;
+    }
+
+    .coupon-item {
+        font-size: 1em;
+        padding: 15px;
+    }
+
+    .coupon-image {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
     </style>
     <script>
         function redeemCoupon(couponId,couponImg,couponName) {

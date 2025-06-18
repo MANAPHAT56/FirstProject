@@ -1,4 +1,4 @@
-<!DOCTYPE html>
++<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -6,69 +6,94 @@
     <title>Tote+ | รายละเอียดคูปอง</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            padding-top: 60px;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 60px 10px 20px 10px; /* padding ด้านข้างเล็กลงสำหรับมือถือ */
+}
 
-        .coupon-container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            font-size: 1.4em; /* ขนาดตัวอักษรที่เท่ากัน */
-            text-align: left;
-        }
+.coupon-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size: 1.2em;
+    text-align: left;
+}
 
-        .coupon-image {
-            width: 160px;
-            height: auto;
-            border-radius: 5px;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+.coupon-image {
+    width: 160px;
+    height: auto;
+    border-radius: 5px;
+    margin: 30px auto;
+    display: block;
+}
 
-        .redeem-button {
-            background-color: #ff9800;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1.4em; /* ขนาดตัวอักษรที่เท่ากัน */
-            margin-top: 30px;
-        }
+.redeem-button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin: 30px auto 0 auto;
+    display: block;
+}
 
-        .redeem-button:hover {
-            background-color: #e68900;
-        }
+.redeem-button:hover {
+    background-color: #e68900;
+}
 
-        .coupon-item {
-            margin-bottom: 30px;
-            padding: 25px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #fff;
-            font-size: 1.4em; /* ขนาดตัวอักษรที่เท่ากัน */
-        }
+.coupon-item {
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 1.2em;
+}
 
-        h2 {
-            text-align: left;
-            margin-left: 10px;
-            font-size: 1.6em; /* ปรับขนาดหัวข้อให้ใหญ่กว่า */
-        }
+h2 {
+    text-align: left;
+    margin-left: 10px;
+    font-size: 1.5em;
+}
 
-        .coupon-item div {
-            margin-bottom: 25px; /* เพิ่มช่องว่างระหว่างแต่ละส่วน */
-        }
+.coupon-item div {
+    margin-bottom: 25px;
+}
+
+/* ✅ Responsive สำหรับหน้าจอเล็ก */
+@media (max-width: 768px) {
+    .coupon-container {
+        padding: 20px;
+        font-size: 1em;
+    }
+
+    .coupon-item {
+        padding: 20px;
+        font-size: 1em;
+    }
+
+    .coupon-image {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .redeem-button {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+}
+
     </style>
     <script>
         function redeemCoupon(couponId, couponImg, couponName) {

@@ -14,27 +14,26 @@ body {
 }
 
 /* Header Section */
-
 header {
     text-align: center;
     padding: 50px 0;
-    background-color: #e8f5e9; /* สีเขียวอ่อน */
-    border-radius: 12px; /* ทำให้มุมโค้งมน */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* เพิ่มเงาเล็กน้อย */
-    margin: 20px 0; /* เพิ่มระยะห่างจากส่วนอื่น */
+    background-color: #e8f5e9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
 }
 
 h1 {
     font-size: 4em;
-    color: #2e7d32; /* สีเขียวเข้ม */
-    margin-bottom: 10px; /* ระยะห่างระหว่างหัวข้อและข้อความ */
+    color: #2e7d32;
+    margin-bottom: 10px;
 }
 
 header p {
     font-size: 1.2em;
-    color: #555; /* สีเทาเข้ม */
-    margin: 0; /* ลบ margin เดิม */
-    padding: 0 20px; /* เพิ่ม padding ข้างๆ ข้อความ */
+    color: #555;
+    margin: 0;
+    padding: 0 20px;
 }
 
 /* Main Section */
@@ -44,15 +43,22 @@ header p {
     justify-content: space-between;
     flex-wrap: wrap;
     margin: 50px 0;
+    gap: 20px;
+}
+
+.image-container {
+    flex: 1 1 300px;
+    text-align: center;
 }
 
 .image-container img {
-    max-width: 400px;
+    max-width: 100%;
     border-radius: 12px;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .content {
+    flex: 1 1 300px;
     max-width: 500px;
 }
 
@@ -60,7 +66,7 @@ header p {
 .button {
     display: inline-block;
     padding: 12px 24px;
-    margin: 10px;
+    margin: 10px 0;
     font-size: 1.1em;
     color: white;
     background-color: #2e7d32;
@@ -97,8 +103,9 @@ header p {
 
 .feature-cards {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
+    gap: 20px;
 }
 
 .card {
@@ -108,6 +115,8 @@ header p {
     width: 250px;
     border-radius: 12px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    flex: 1 1 250px;
+    max-width: 300px;
 }
 
 .card h3 {
@@ -126,5 +135,56 @@ header p {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* === Responsive Breakpoints === */
+
+/* Tablet: < 768px */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    header p {
+        font-size: 1em;
+    }
+
+    .intro {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .content {
+        max-width: 100%;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Mobile: < 480px */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .features h2 {
+        font-size: 1.5em;
+    }
+
+    .card h3 {
+        font-size: 1.2em;
+    }
+
+    .button {
+        font-size: 1em;
+        padding: 10px 16px;
     }
 }
